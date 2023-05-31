@@ -4,16 +4,19 @@ import { UserProduct } from '../../../database/users-products'
 import { handleResponseError } from '../../../utilities/handle-response-error'
 import { type RequestParamsWithId } from '../../../utilities/types'
 
+import { ResponseLocalsWithUserProduct } from '../user-products.types'
+
 export async function setUserProductOnResponseLocalsById(
   req: Request<RequestParamsWithId>,
-  res: Response,
+  res: Response<{}, ResponseLocalsWithUserProduct>,
   next: NextFunction
 ) {
   try {
-    const { id } = req.params
+    const { id: _id } = req.params
 
-    const product = await UserProduct.findById(id)
+    const userId = res.locals.user.id
 
+    const product = await UserProduct.findOne({ _id, userId })
     if (product) {
       res.locals.product = product
 

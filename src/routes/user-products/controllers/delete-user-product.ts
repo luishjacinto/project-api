@@ -13,6 +13,8 @@ export async function deleteProduct(
 ) {
   try {
     await res.locals.product.deleteOne()
+
+    res.status(200).end()
   } catch (error) {
     handleResponseError(res, 400, error)
   }

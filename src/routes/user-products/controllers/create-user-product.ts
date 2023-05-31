@@ -51,7 +51,7 @@ export async function createUserProduct(
 
     const id = userProduct.id
 
-    res.json({ id }).end()
+    res.status(201).json({ id }).end()
   } catch (error) {
     handleResponseError(res, 400, error)
   }
