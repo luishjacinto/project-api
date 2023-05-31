@@ -1,0 +1,1 @@
+export * from './set-user-product-on-response-locals-by-id'

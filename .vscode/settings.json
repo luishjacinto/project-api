@@ -1,0 +1,10 @@
+{
+  "editor.tabSize": 2,
+  "files.encoding": "utf8",
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "javascript.format.semicolons": "remove",
+  "typescript.format.semicolons": "remove",
+  "json.format.keepLines": true,
+  "files.insertFinalNewline": true
+}
