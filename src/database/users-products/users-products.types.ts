@@ -1,9 +1,13 @@
-import { Document, Model } from "mongoose";
+import { Document, Model } from "mongoose"
+
+import { IProductDocument } from '../products'
+import { IUserDocument } from '../users/users.types'
 
 export interface IUserProduct {
   name: string
-  product_id: string
   gtin: string
+  product: IProductDocument
+  user: IUserDocument
   quantity: number
   addedAt: Date
   expiresAt?: Date
@@ -12,8 +16,9 @@ export interface IUserProduct {
 
 export interface IUserProductDocument extends Document{
   name: string
-  product_id: string
   gtin: string
+  product: IProductDocument
+  user: IUserDocument
   quantity: number
   addedAt: Date
   expiresAt?: Date

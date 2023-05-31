@@ -1,9 +1,9 @@
 import { Schema } from "mongoose"
 
 import { findByGTIN } from './users-products.statics'
-import { setLastUpdated } from './users-products.methods'
 
 import ProductSchema from '../products/products.schema'
+import UserSchema from '../users/users.schema'
 
 const UserProductSchema = new Schema({
   name: {
@@ -17,25 +17,20 @@ const UserProductSchema = new Schema({
   product: {
     type: ProductSchema
   },
+  user: {
+    type: UserSchema
+  },
   quantity: {
     type: Number,
     required: true
   },
-  addedAt: {
-    type: Date,
-    required: true
-  },
   expiresAt: {
     type: Date
-  },
-  lastUpdated: {
-    type: Date,
-    default: new Date()
   }
+}, {
+  timestamps: true
 })
 
 UserProductSchema.statics.findByGTIN = findByGTIN
-
-UserProductSchema.methods.setLastUpdated = setLastUpdated
 
 export default UserProductSchema
