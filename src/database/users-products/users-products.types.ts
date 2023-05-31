@@ -1,29 +1,23 @@
-import { Document, Model } from "mongoose"
-
-import { IProductDocument } from '../products'
-import { IUserDocument } from '../users/users.types'
+import { Document, Model, ObjectId } from "mongoose"
 
 export interface IUserProduct {
   name: string
   gtin: string
-  product: IProductDocument
-  user: IUserDocument
+  productId: ObjectId
+  userId: ObjectId
   quantity: number
   addedAt: Date
   expiresAt?: Date
-  lastUpdated?: Date
 }
 
 export interface IUserProductDocument extends Document{
   name: string
   gtin: string
-  product: IProductDocument
-  user: IUserDocument
+  productId: ObjectId
+  userId: ObjectId
   quantity: number
   addedAt: Date
   expiresAt?: Date
-  lastUpdated?: Date
-  setLastUpdated: () => Promise<void>
 }
 
 export interface IUserProductModel extends Model<IUserProductDocument> {

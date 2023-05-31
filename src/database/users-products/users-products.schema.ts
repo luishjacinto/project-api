@@ -2,8 +2,7 @@ import { Schema } from "mongoose"
 
 import { findByGTIN } from './users-products.statics'
 
-import ProductSchema from '../products/products.schema'
-import UserSchema from '../users/users.schema'
+import { defaultSchemaOptions } from '../../utilities'
 
 const UserProductSchema = new Schema({
   name: {
@@ -14,11 +13,11 @@ const UserProductSchema = new Schema({
     type: String,
     required: true
   },
-  product: {
-    type: ProductSchema
+  productId: {
+    type: Schema.Types.ObjectId
   },
-  user: {
-    type: UserSchema
+  userId: {
+    type: Schema.Types.ObjectId
   },
   quantity: {
     type: Number,
@@ -27,9 +26,7 @@ const UserProductSchema = new Schema({
   expiresAt: {
     type: Date
   }
-}, {
-  timestamps: true
-})
+}, defaultSchemaOptions)
 
 UserProductSchema.statics.findByGTIN = findByGTIN
 

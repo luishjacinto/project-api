@@ -1,7 +1,7 @@
 import { Schema } from "mongoose"
 
 import { findOneOrCreate } from './users.statics'
-import { setLastUpdated } from './users.methods'
+import { defaultSchemaOptions } from '../../utilities'
 
 const UserSchema = new Schema({
   name: {
@@ -19,10 +19,9 @@ const UserSchema = new Schema({
   token: {
     type: String
   }
-})
+}, defaultSchemaOptions)
 
 UserSchema.statics.findOneOrCreate = findOneOrCreate
 
-UserSchema.methods.setLastUpdated = setLastUpdated
 
 export default UserSchema

@@ -13,7 +13,7 @@ export type CreateUserProductBody = {
   name: string,
   gtin: string,
   quantity: number,
-  expiresAt: number | null
+  expiresAt: string | null
 }
 
 export async function createUserProduct(
@@ -29,25 +29,29 @@ export async function createUserProduct(
     } = req.body
 
     const userProduct = new UserProduct()
-    userProduct.user = res.locals.user
+    userProduct.userId = res.locals.user.id
     userProduct.name = name
     userProduct.gtin = gtin
     userProduct.quantity = quantity
     if (expiresAt) {
+      if(Number.isNaN(Date.parse(expiresAt))) {
+        throw new Error("Invalid format of expiresAt")
+      }
+
       userProduct.expiresAt = new Date(expiresAt)
     }
 
     const product = await Product.findByGTIN(gtin)
 
     if (product) {
-      userProduct.product = product
+      userProduct.productId = product.id
     }
 
     await userProduct.save()
 
     const id = userProduct.id
 
-    res.json({ id })
+    res.json({ id }).end()
   } catch (error) {
     handleResponseError(res, 400, error)
   }

@@ -1,7 +1,7 @@
 import { Schema } from "mongoose"
 
 import { findByGTIN } from './products.statics'
-import { setLastUpdated } from './products.methods'
+import { defaultSchemaOptions } from '../../utilities'
 
 const ProductSchema = new Schema({
   name: {
@@ -11,15 +11,9 @@ const ProductSchema = new Schema({
   gtin: {
     type: String,
     required: true
-  },
-  lastUpdated: {
-    type: Date,
-    default: new Date()
   }
-})
+}, defaultSchemaOptions)
 
 ProductSchema.statics.findByGTIN = findByGTIN
-
-ProductSchema.methods.setLastUpdated = setLastUpdated
 
 export default ProductSchema
