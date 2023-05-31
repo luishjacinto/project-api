@@ -20,12 +20,12 @@ if (!PORT) {
 
 const app = express()
 
-connect()
-
 app.use(json())
-app.use(productsRouter)
-app.use(userProductsRouter)
 app.use(userRouter)
+app.use(userProductsRouter)
+app.use(productsRouter)
+
+connect()
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`)
