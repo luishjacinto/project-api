@@ -12,7 +12,7 @@ export async function deleteProduct(
   res: Response<{}, ResponseLocalsWithUserProduct>
 ) {
   try {
-    await res.locals.product.deleteOne()
+    await res.locals.userProduct.deleteOne()
 
     res.status(200).end()
   } catch (error) {

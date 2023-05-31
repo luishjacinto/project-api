@@ -16,9 +16,9 @@ export async function setUserProductOnResponseLocalsById(
 
     const userId = res.locals.user.id
 
-    const product = await UserProduct.findOne({ _id, userId })
-    if (product) {
-      res.locals.product = product
+    const userProduct = await UserProduct.findOne({ _id, userId })
+    if (userProduct) {
+      res.locals.userProduct = userProduct
 
       return next()
     } else {

@@ -24,7 +24,7 @@ export async function updateUserProduct(
       expiresAt
     } = req.body
 
-    const userProduct = res.locals.product
+    const { userProduct } = res.locals
     userProduct.name = name
     userProduct.quantity = quantity
 

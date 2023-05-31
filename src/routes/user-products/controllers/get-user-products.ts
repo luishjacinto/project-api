@@ -15,9 +15,9 @@ export async function getUserProducts(
   try {
     const userId = res.locals.user.id
 
-    const products = await UserProduct.find({ userId })
+    const userProducts = await UserProduct.find({ userId })
 
-    res.send(products).end()
+    res.send(userProducts).end()
   } catch (error) {
     handleResponseError(res, 400, error)
   }
