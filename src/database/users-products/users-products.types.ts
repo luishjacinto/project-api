@@ -6,7 +6,8 @@ export interface IUserProduct {
   productId: ObjectId
   userId: ObjectId
   quantity: number
-  addedAt: Date
+  quantityUsed?: number
+  quantityDiscarded?: number
   expiresAt?: Date
 }
 
@@ -16,10 +17,9 @@ export interface IUserProductDocument extends Document{
   productId: ObjectId
   userId: ObjectId
   quantity: number
-  addedAt: Date
+  quantityUsed?: number
+  quantityDiscarded?: number
   expiresAt?: Date
 }
 
-export interface IUserProductModel extends Model<IUserProductDocument> {
-  findByGTIN: ( gtin: string ) => Promise<IUserProductDocument | null>;
-}
+export interface IUserProductModel extends Model<IUserProductDocument> {}

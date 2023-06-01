@@ -1,7 +1,5 @@
 import { Schema } from "mongoose"
 
-import { findByGTIN } from './users-products.statics'
-
 import { defaultSchemaOptions } from '../../utilities'
 
 const UserProductSchema = new Schema({
@@ -17,17 +15,48 @@ const UserProductSchema = new Schema({
     type: Schema.Types.ObjectId
   },
   userId: {
-    type: Schema.Types.ObjectId
+    type: Schema.Types.ObjectId,
+    required: true
   },
   quantity: {
     type: Number,
-    required: true
+    required: true,
+    min: 0,
+    validate: {
+      message: 'The sum of used and discarded cannot be greater than quantity',
+      validator: function (quantity: number) {
+        const context = (this as any)
+        return quantity >= (context.quantityUsed + context.quantityDiscarded);
+      },
+    },
+  },
+  quantityUsed: {
+    type: Number,
+    default: 0,
+    min: 0,
+    validate: {
+      message: 'Quantity of used cannot be greater than quantity',
+      validator: function (quantityUsed: number) {
+        const context = (this as any)
+        return quantityUsed <= context.quantity;
+      },
+    },
+  },
+  quantityDiscarded: {
+    type: Number,
+    default: 0,
+    min: 0,
+    validate: {
+      message: 'Quantity of discarded cannot be greater than quantity',
+      validator: function (quantityDiscarded: number) {
+        const context = (this as any)
+        return quantityDiscarded <= context.quantity;
+      },
+    },
   },
   expiresAt: {
     type: Date
   }
 }, defaultSchemaOptions)
-
-UserProductSchema.statics.findByGTIN = findByGTIN
 
 export default UserProductSchema
