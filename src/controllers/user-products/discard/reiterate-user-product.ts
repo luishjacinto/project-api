@@ -7,7 +7,7 @@ import {
 
 import { type ResponseLocalsWithUserProduct } from '../../../types/routes'
 
-export type ReiterateUserProductBody = {
+type ReiterateUserProductBody = {
   quantity?: number
 }
 

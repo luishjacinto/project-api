@@ -8,6 +8,6 @@ export const connect = () => {
   }
 
   Mongoose.connect(MONGO_URI)
-    .then(() => console.log("Connected to database"))
+    .then(() => console.log(`Connected to database ${MONGO_URI}`))
     .catch((error) => console.log(error))
 }

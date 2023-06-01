@@ -6,7 +6,7 @@ import {
 } from '../../../utilities'
 import { type ResponseLocalsWithUserProduct } from '../../../types/routes'
 
-export type DiscardUserProductBody = {
+type DiscardUserProductBody = {
   quantity?: number
 }
 
@@ -23,7 +23,7 @@ export async function discardUserProduct(
 
     await userProduct.discard(quantity || 1)
 
-    res.status(201).end()
+    res.status(204).end()
   } catch (error) {
     handleResponseError(res, 400, error)
   }

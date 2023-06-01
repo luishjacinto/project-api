@@ -7,7 +7,7 @@ import {
 
 import { type ResponseLocalsWithUserProduct } from '../../../types/routes'
 
-export type DisuseUserProductBody = {
+type DisuseUserProductBody = {
   quantity?: number
 }
 

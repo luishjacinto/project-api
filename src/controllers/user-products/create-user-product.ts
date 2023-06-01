@@ -9,7 +9,7 @@ import { Product } from '../../database/products'
 import { UserProduct } from '../../database/users-products'
 import { ResponseLocalsWithUser } from '../../types/routes'
 
-export type CreateUserProductBody = {
+type CreateUserProductBody = {
   name: string
   gtin: string
   quantity: number

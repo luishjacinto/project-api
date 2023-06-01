@@ -1,20 +1,47 @@
 import { Request, Response } from 'express'
+import { FilterQuery, type SortOrder } from 'mongoose'
 
-import { UserProduct } from '../../database/users-products'
+import { type IUserProduct, UserProduct } from '../../database/users-products'
 import {
   type RequestParamsWithId,
   handleResponseError
 } from '../../utilities'
 import { type ResponseLocalsWithUserProduct } from '../../types/routes'
 
+type GetUserProductsQuery = {
+  gtin?: string
+  name?: string
+  sort?: keyof IUserProduct
+  sortOrder?: SortOrder
+}
+
 export async function getUserProducts(
-  _: Request<RequestParamsWithId>,
+  req: Request<RequestParamsWithId, any, any, GetUserProductsQuery>,
   res: Response<{}, ResponseLocalsWithUserProduct>
 ) {
   try {
     const userId = res.locals.user.id
 
-    const userProducts = await UserProduct.find({ userId })
+    let {
+      gtin,
+      name,
+      sort,
+      sortOrder
+    } = req.query
+
+    if (!sort || !sortOrder) {
+      sort = 'name'
+      sortOrder = 'asc'
+    }
+
+    const userProducts =
+      await UserProduct
+        .find({
+          userId,
+          gtin: new RegExp(gtin || '', 'i'),
+          name: new RegExp(name || '', 'i'),
+        })
+        .sort({ [sort]: sortOrder })
 
     res.send(userProducts).end()
   } catch (error) {

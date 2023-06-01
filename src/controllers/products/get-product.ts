@@ -21,5 +21,5 @@ export async function getProduct(
     id,
     name,
     gtin
-  })
+  }).end()
 }

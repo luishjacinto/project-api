@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 
-import { User } from '../../database/users'
-import { jwtVerify, handleResponseError } from '../../utilities'
+import { User } from '../database/users'
+import { jwtVerify, handleResponseError } from '../utilities'
 
 export async function setUserOnResponseLocalsByJWT(
   req: Request,

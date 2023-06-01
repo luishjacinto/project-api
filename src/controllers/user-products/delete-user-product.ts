@@ -13,7 +13,7 @@ export async function deleteProduct(
   try {
     await res.locals.userProduct.deleteOne()
 
-    res.status(200).end()
+    res.end()
   } catch (error) {
     handleResponseError(res, 400, error)
   }

@@ -6,7 +6,7 @@ import {
 } from '../../utilities'
 import { type ResponseLocalsWithUserProduct } from '../../types/routes'
 
-export type UpdateUserProductBody = {
+type UpdateUserProductBody = {
   name: string
   quantity: number
   expiresAt: string | null

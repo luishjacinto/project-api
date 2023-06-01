@@ -7,7 +7,7 @@ import {
 
 import { type ResponseLocalsWithUserProduct } from '../../../types/routes'
 
-export type UseUserProductBody = {
+type UseUserProductBody = {
   quantity?: number
 }
 
@@ -24,7 +24,7 @@ export async function useUserProduct(
 
     await userProduct.use(quantity || 1)
 
-    res.status(201).end()
+    res.status(204).end()
   } catch (error) {
     handleResponseError(res, 400, error)
   }
