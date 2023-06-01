@@ -1,7 +1,7 @@
 import { Schema } from "mongoose"
 
 import { findByGTIN } from './products.statics'
-import { defaultSchemaOptions } from '../../utilities'
+import { defaultSchemaOptions } from '../../config/default-schema-options'
 
 const ProductSchema = new Schema({
   name: {
@@ -10,7 +10,8 @@ const ProductSchema = new Schema({
   },
   gtin: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   }
 }, defaultSchemaOptions)
 

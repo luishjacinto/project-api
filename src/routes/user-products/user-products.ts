@@ -1,36 +1,24 @@
 import express from 'express'
 
-import { setUserOnResponseLocalsByJWT } from '../users'
-import { setUserProductOnResponseLocalsById } from './middlewares'
-import {
-  getUserProduct,
-  getUserProducts,
-  createUserProduct,
-  deleteProduct,
-  updateUserProduct,
-  useUserProduct,
-  disuseUserProduct,
-  discardUserProduct,
-  reiterateUserProduct
-} from './controllers'
+import { rootMiddlewares, userProductsMiddlewares } from '../../middlewares'
+import { userProductsControllers } from '../../controllers'
+import { userProductsUseRouter } from './use'
+import { userProductsDiscardRouter } from './discard'
 
 const router = express.Router()
 
-router.use('/user_products', setUserOnResponseLocalsByJWT)
+router.use('/user_products', rootMiddlewares.setUserOnResponseLocalsByJWT)
 
-router.get('/user_products', getUserProducts)
-router.post('/user_products', createUserProduct)
+router.get('/user_products', userProductsControllers.getUserProducts)
+router.post('/user_products', userProductsControllers.createUserProduct)
 
-router.use('/user_products/:id', setUserProductOnResponseLocalsById)
+router.use('/user_products/:id', userProductsMiddlewares.setUserProductOnResponseLocalsById)
 
-router.get('/user_products/:id', getUserProduct)
-router.put('/user_products/:id', updateUserProduct)
-router.delete('/user_products/:id', deleteProduct)
+router.get('/user_products/:id', userProductsControllers.getUserProduct)
+router.put('/user_products/:id', userProductsControllers.updateUserProduct)
+router.delete('/user_products/:id', userProductsControllers.deleteProduct)
 
-router.post('/user_products/:id/use', useUserProduct)
-router.delete('/user_products/:id/use', disuseUserProduct)
-
-router.post('/user_products/:id/discard', discardUserProduct)
-router.delete('/user_products/:id/discard', reiterateUserProduct)
+router.use(userProductsUseRouter)
+router.use(userProductsDiscardRouter)
 
 export { router as userProductsRouter }

@@ -1,7 +1,7 @@
 import { Schema } from "mongoose"
 
 import { findOneOrCreate } from './users.statics'
-import { defaultSchemaOptions } from '../../utilities'
+import { defaultSchemaOptions } from '../../config/default-schema-options'
 
 const UserSchema = new Schema({
   name: {

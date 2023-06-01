@@ -1,6 +1,6 @@
 import { Schema } from "mongoose"
 
-import { defaultSchemaOptions } from '../../utilities'
+import { defaultSchemaOptions } from '../../config/default-schema-options'
 import { howManyLeft, discard, disuse, reiterate, use } from './users-products.methods'
 
 const UserProductSchema = new Schema({

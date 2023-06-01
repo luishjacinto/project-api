@@ -1,16 +1,14 @@
 import express from 'express'
 
-import { setUserOnResponseLocalsByJWT } from '../users/'
-import { setProductOnResponseLocalsByGTINOrExternalApi } from './middlewares'
-import {
-  getProduct
-} from './controllers'
-
+import { productsMiddlewares, rootMiddlewares } from '../../middlewares'
+import { productsControllers } from '../../controllers'
 
 const router = express.Router()
 
-router.use(setUserOnResponseLocalsByJWT)
+router.use('/products', rootMiddlewares.setUserOnResponseLocalsByJWT)
 
-router.get('/products/:gtin', setProductOnResponseLocalsByGTINOrExternalApi, getProduct)
+router.use('/products/:gtin', productsMiddlewares.setProductOnResponseLocalsByGTINOrExternalApi)
+
+router.get('/products/:gtin', productsControllers.getProduct)
 
 export { router as productsRouter }
