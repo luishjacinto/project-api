@@ -1,7 +1,8 @@
 import dotenv from 'dotenv'
-import { json } from 'body-parser'
-
 import express from 'express'
+import { json } from 'body-parser'
+import morgan from 'morgan'
+
 import { connect } from './database/database'
 
 import {
@@ -21,6 +22,7 @@ if (!PORT) {
 const app = express()
 
 app.use(json())
+app.use(morgan('dev'))
 app.use(userRouter)
 app.use(userProductsRouter)
 app.use(productsRouter)
