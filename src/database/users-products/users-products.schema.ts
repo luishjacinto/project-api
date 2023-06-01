@@ -1,6 +1,7 @@
 import { Schema } from "mongoose"
 
 import { defaultSchemaOptions } from '../../utilities'
+import { howManyLeft, discard, disuse, reiterate, use } from './users-products.methods'
 
 const UserProductSchema = new Schema({
   name: {
@@ -58,5 +59,13 @@ const UserProductSchema = new Schema({
     type: Date
   }
 }, defaultSchemaOptions)
+
+UserProductSchema.methods.howManyLeft = howManyLeft
+
+UserProductSchema.methods.use = use
+UserProductSchema.methods.disuse = disuse
+
+UserProductSchema.methods.discard = discard
+UserProductSchema.methods.reiterate = reiterate
 
 export default UserProductSchema
