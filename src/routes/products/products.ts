@@ -7,7 +7,7 @@ const router = express.Router()
 
 router.use('/products', rootMiddlewares.setUserOnResponseLocalsByJWT)
 
-router.use('/products/:gtin', productsMiddlewares.setProductOnResponseLocalsByGTINOrExternalApi)
+router.use('/products/:gtin', productsMiddlewares.setProductOnResponseLocalsByGTIN)
 
 router.get('/products/:gtin', productsControllers.getProduct)
 

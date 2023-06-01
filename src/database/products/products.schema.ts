@@ -12,7 +12,10 @@ const ProductSchema = new Schema({
     type: String,
     required: true,
     unique: true
-  }
+  },
+  thumbnail: {
+    type: String
+  },
 }, defaultSchemaOptions)
 
 ProductSchema.statics.findByGTIN = findByGTIN

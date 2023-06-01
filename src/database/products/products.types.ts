@@ -5,11 +5,13 @@ import { FindOneOrCreateParams } from './products.statics';
 export interface IProduct {
   name: string
   gtin: string
+  thumbnail?: string
 }
 
 export interface IProductDocument extends Document{
   name: string
   gtin: string
+  thumbnail?: string
 }
 
 export interface IProductModel extends Model<IProductDocument> {

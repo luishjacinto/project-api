@@ -9,7 +9,7 @@ import {
   type ResponseLocalsWithProduct
 } from '../../types/routes'
 
-export async function setProductOnResponseLocalsByGTINOrExternalApi(
+export async function setProductOnResponseLocalsByGTIN(
   req: Request<RequestParamsWithGTIN>,
   res: Response<{}, ResponseLocalsWithProduct>,
   next: NextFunction
@@ -25,7 +25,8 @@ export async function setProductOnResponseLocalsByGTINOrExternalApi(
       if (productInfo) {
         product = await Product.create({
           name: productInfo.description,
-          gtin
+          gtin,
+          thumbnail: productInfo.thumbnail
         })
       }
     }

@@ -9,17 +9,7 @@ export async function getProduct(
   _: Request<RequestParamsWithGTIN>,
   res: Response<{}, ResponseLocalsWithProduct>
 ) {
-  const product = res.locals.product
+  const { product } = res.locals
 
-  const {
-    id,
-    name,
-    gtin
-  } = product
-
-  res.json({
-    id,
-    name,
-    gtin
-  }).end()
+  res.json(product).end()
 }
