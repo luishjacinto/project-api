@@ -8,20 +8,29 @@ import {
   createUserProduct,
   deleteProduct,
   updateUserProduct,
+  useUserProduct,
+  disuseUserProduct,
+  discardUserProduct,
+  reiterateUserProduct
 } from './controllers'
 
 const router = express.Router()
 
-router.use(setUserOnResponseLocalsByJWT)
+router.use('/user_products', setUserOnResponseLocalsByJWT)
 
-router.get(`/user_products`, getUserProducts)
+router.get('/user_products', getUserProducts)
+router.post('/user_products', createUserProduct)
 
-router.get(`/user_products/:id`, setUserProductOnResponseLocalsById, getUserProduct)
+router.use('/user_products/:id', setUserProductOnResponseLocalsById)
 
-router.post(`/user_products`, createUserProduct)
+router.get('/user_products/:id', getUserProduct)
+router.put('/user_products/:id', updateUserProduct)
+router.delete('/user_products/:id', deleteProduct)
 
-router.put(`/user_products/:id`, setUserProductOnResponseLocalsById, updateUserProduct)
+router.post('/user_products/:id/use', useUserProduct)
+router.delete('/user_products/:id/use', disuseUserProduct)
 
-router.delete(`/user_products/:id`, setUserProductOnResponseLocalsById, deleteProduct)
+router.post('/user_products/:id/discard', discardUserProduct)
+router.delete('/user_products/:id/discard', reiterateUserProduct)
 
 export { router as userProductsRouter }

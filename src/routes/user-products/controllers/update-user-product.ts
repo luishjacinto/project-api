@@ -9,8 +9,6 @@ import { type ResponseLocalsWithUserProduct } from '..'
 export type UpdateUserProductBody = {
   name: string
   quantity: number
-  quantityUsed: number
-  quantityDiscarded: number
   expiresAt: string | null
 }
 
@@ -22,8 +20,6 @@ export async function updateUserProduct(
     const {
       name,
       quantity,
-      quantityUsed,
-      quantityDiscarded,
       expiresAt
     } = req.body
 
@@ -31,8 +27,6 @@ export async function updateUserProduct(
 
     userProduct.name = name
     userProduct.quantity = quantity
-    userProduct.quantityUsed = quantityUsed || 0
-    userProduct.quantityDiscarded = quantityDiscarded || 0
 
     if (expiresAt) {
       if(Number.isNaN(Date.parse(expiresAt))) {
