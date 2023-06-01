@@ -16,7 +16,7 @@ export function jwtSign(payload: object): string {
   const token = jwt.sign(
     payload,
     getJWTSecret(),
-    { expiresIn: '5m' }
+    { expiresIn: '1h' }
   )
 
   return token
