@@ -15,7 +15,8 @@ type CreateUserProductBody = {
   quantity: number
   quantityUsed: number
   quantityDiscarded: number
-  expiresAt: string | null
+  observation?: string
+  expiresAt?: string
 }
 
 export async function createUserProduct(
@@ -29,6 +30,7 @@ export async function createUserProduct(
       quantity,
       quantityUsed,
       quantityDiscarded,
+      observation,
       expiresAt
     } = req.body
 
@@ -41,6 +43,10 @@ export async function createUserProduct(
     userProduct.quantity = quantity
     userProduct.quantityUsed = quantityUsed || 0
     userProduct.quantityDiscarded = quantityDiscarded || 0
+
+    if (observation) {
+      userProduct.observation = observation
+    }
 
     if (expiresAt) {
       if(Number.isNaN(Date.parse(expiresAt))) {

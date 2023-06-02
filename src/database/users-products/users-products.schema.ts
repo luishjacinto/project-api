@@ -55,9 +55,12 @@ const UserProductSchema = new Schema({
       },
     },
   },
+  observation: {
+    type: String
+  },
   expiresAt: {
     type: Date
-  }
+  },
 }, defaultSchemaOptions)
 
 UserProductSchema.methods.user = user

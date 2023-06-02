@@ -10,6 +10,7 @@ export interface IUserProduct {
   quantity: number
   quantityUsed: number
   quantityDiscarded: number
+  observation?: string
   expiresAt?: Date
   createdAt: Date
   updatedAt: Date
@@ -23,6 +24,7 @@ export interface IUserProductDocument extends Document{
   quantity: number
   quantityUsed: number
   quantityDiscarded: number
+  observation?: string
   expiresAt?: Date
   createdAt: Date
   updatedAt: Date
