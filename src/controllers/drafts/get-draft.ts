@@ -4,16 +4,16 @@ import {
   type RequestParamsWithId,
   handleResponseError
 } from '../../utilities'
-import { ResponseLocalsWithUserProduct } from '../../types/routes'
+import { type ResponseLocalsWithDraft } from '../../types/routes'
 
-export async function deleteUserProduct(
+export async function getDraft(
   _: Request<RequestParamsWithId>,
-  res: Response<{}, ResponseLocalsWithUserProduct>
+  res: Response<{}, ResponseLocalsWithDraft>
 ) {
   try {
-    await res.locals.userProduct.deleteOne()
+    const { draft } = res.locals
 
-    res.end()
+    res.json(draft).end()
   } catch (error) {
     handleResponseError(res, 400, error)
   }

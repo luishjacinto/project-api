@@ -16,7 +16,7 @@ router.use('/user_products/:id', userProductsMiddlewares.setUserProductOnRespons
 
 router.get('/user_products/:id', userProductsControllers.getUserProduct)
 router.put('/user_products/:id', userProductsControllers.updateUserProduct)
-router.delete('/user_products/:id', userProductsControllers.deleteProduct)
+router.delete('/user_products/:id', userProductsControllers.deleteUserProduct)
 
 router.use(userProductsUseRouter)
 router.use(userProductsDiscardRouter)

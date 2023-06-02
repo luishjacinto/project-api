@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
-import { FilterQuery, type SortOrder } from 'mongoose'
+import { type SortOrder } from 'mongoose'
 
 import { type IUserProduct, UserProduct } from '../../database/users-products'
 import {
   type RequestParamsWithId,
   handleResponseError
 } from '../../utilities'
-import { type ResponseLocalsWithUserProduct } from '../../types/routes'
+import { type ResponseLocalsWithUser } from '../../types/routes'
 
 type GetUserProductsQuery = {
   gtin?: string
@@ -17,7 +17,7 @@ type GetUserProductsQuery = {
 
 export async function getUserProducts(
   req: Request<RequestParamsWithId, any, any, GetUserProductsQuery>,
-  res: Response<{}, ResponseLocalsWithUserProduct>
+  res: Response<{}, ResponseLocalsWithUser>
 ) {
   try {
     const userId = res.locals.user.id

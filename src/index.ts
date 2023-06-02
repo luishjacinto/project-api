@@ -8,7 +8,8 @@ import { connect } from './database/database'
 import {
     productsRouter,
     userProductsRouter,
-    userRouter
+    userRouter,
+    draftsRouter
 } from './routes'
 
 dotenv.config()
@@ -26,6 +27,7 @@ app.use(morgan('dev'))
 app.use(userRouter)
 app.use(userProductsRouter)
 app.use(productsRouter)
+app.use(draftsRouter)
 
 connect()
 

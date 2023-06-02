@@ -11,7 +11,7 @@ export async function getUserProduct(
   res: Response<{}, ResponseLocalsWithUserProduct>
 ) {
   try {
-    const userProduct = res.locals.userProduct
+    const { userProduct } = res.locals
 
     res.json(userProduct).end()
   } catch (error) {
