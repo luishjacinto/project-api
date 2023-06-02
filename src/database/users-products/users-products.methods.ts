@@ -28,8 +28,12 @@ export async function use(this: IUserProductDocument, quantity: number = 1): Pro
 }
 
 export async function disuse(this: IUserProductDocument, quantity: number = 1): Promise<void> {
-  if ((this.quantityUsed - quantity) < 0) {
+  if (this.quantityUsed === 0) {
     throw new Error("No amount of product was used")
+  }
+
+  if (quantity > this.quantityUsed) {
+    throw new Error("The amount intended to be disuse is greater than the amount used")
   }
 
   this.quantityUsed -= quantity
@@ -46,8 +50,12 @@ export async function discard(this: IUserProductDocument, quantity: number = 1):
 }
 
 export async function reiterate(this: IUserProductDocument, quantity: number = 1): Promise<void> {
-  if ((this.quantityDiscarded - quantity) < 0) {
+  if (this.quantityDiscarded === 0) {
     throw new Error("No amount of product was discarded")
+  }
+
+  if (quantity > this.quantityDiscarded) {
+    throw new Error("The amount intended to reiterate is greater than the amount discarded")
   }
 
   this.quantityDiscarded -= quantity
