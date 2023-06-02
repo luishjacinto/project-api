@@ -1,4 +1,18 @@
 import { IUserProductDocument } from './users-products.types'
+import { IProductDocument, Product } from '../products'
+import { IUserDocument, User } from '../users'
+
+export async function user(this: IUserProductDocument): Promise<IUserDocument | null> {
+  return await User.findById(this.userId)
+}
+
+export async function product(this: IUserProductDocument): Promise<IProductDocument | null> {
+  if (this.productId) {
+    return await Product.findById(this.productId)
+  }
+
+  return null
+}
 
 export function howManyLeft(this: IUserProductDocument): number {
   return this.quantity - (this.quantityUsed + this.quantityDiscarded)

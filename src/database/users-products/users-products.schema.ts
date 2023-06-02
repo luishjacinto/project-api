@@ -1,7 +1,7 @@
 import { Schema } from "mongoose"
 
 import { defaultSchemaOptions } from '../../config/default-schema-options'
-import { howManyLeft, discard, disuse, reiterate, use } from './users-products.methods'
+import { user, product, howManyLeft, discard, disuse, reiterate, use } from './users-products.methods'
 
 const UserProductSchema = new Schema({
   name: {
@@ -60,6 +60,8 @@ const UserProductSchema = new Schema({
   }
 }, defaultSchemaOptions)
 
+UserProductSchema.methods.user = user
+UserProductSchema.methods.product = product
 UserProductSchema.methods.howManyLeft = howManyLeft
 
 UserProductSchema.methods.use = use
