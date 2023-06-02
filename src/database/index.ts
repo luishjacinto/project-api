@@ -1,4 +1,5 @@
 export * from './products'
 export * from './users'
 export * from './users-products'
+export * from './drafts'
 export * from './database'

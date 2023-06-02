@@ -6,12 +6,16 @@ export interface IProduct {
   name: string
   gtin: string
   thumbnail?: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface IProductDocument extends Document{
   name: string
   gtin: string
   thumbnail?: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface IProductModel extends Model<IProductDocument> {

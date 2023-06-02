@@ -11,6 +11,8 @@ export interface IUserProduct {
   quantityUsed: number
   quantityDiscarded: number
   expiresAt?: Date
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface IUserProductDocument extends Document{
@@ -22,6 +24,8 @@ export interface IUserProductDocument extends Document{
   quantityUsed: number
   quantityDiscarded: number
   expiresAt?: Date
+  createdAt: Date
+  updatedAt: Date
   user: () => Promise<IUser | null>
   product: () => Promise<IProduct | null>
   howManyLeft: () => number
