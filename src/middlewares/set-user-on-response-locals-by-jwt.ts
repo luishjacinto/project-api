@@ -17,6 +17,10 @@ export async function setUserOnResponseLocalsByJWT(
       const user = await User.findById(payload.id);
 
       if (user) {
+        if (!user.verified) {
+          throw new Error("Unverified user, please check your email to verify user")
+        }
+
         res.locals.user = user
 
         return next()
@@ -27,6 +31,6 @@ export async function setUserOnResponseLocalsByJWT(
       throw new Error("JWT not found in authorization header")
     }
   } catch (error) {
-      handleResponseError(res, 403, error)
+      handleResponseError(res, 401, error)
   }
 }

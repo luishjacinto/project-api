@@ -22,10 +22,11 @@ export function jwtSign(payload: object): string {
   return token
 }
 
-export function jwtVerify(token: string): jwt.JwtPayload {
+export function jwtVerify(token: string, options?: jwt.VerifyOptions): jwt.JwtPayload {
   const payload = jwt.verify(
     token,
     getJWTSecret(),
+    options
   )
 
   if (typeof payload === 'string') {

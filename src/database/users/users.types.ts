@@ -4,6 +4,7 @@ export interface IUser {
   name: string
   email: string
   password: string
+  verified: boolean
   createdAt: Date
   updatedAt: Date
 }
@@ -12,6 +13,7 @@ export interface IUserDocument extends Document{
   name: string
   email: string
   password: string
+  verified: boolean
   createdAt: Date
   updatedAt: Date
 }

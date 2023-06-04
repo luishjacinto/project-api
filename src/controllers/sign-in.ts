@@ -19,7 +19,10 @@ export async function signIn(
 
     if (user) {
       if (bcrypt.compareSync(password, user.password)) {
-        await user.updateOne({ id: user.id });
+        if (!user.verified) {
+          return handleResponseError(res, 401, "Unverified user, please check your email to verify user")
+        }
+
         const token = await jwtSign({ id: user.id })
 
         return res.json({
@@ -34,7 +37,6 @@ export async function signIn(
 
     handleResponseError(res, 404, 'User not found')
   } catch (error) {
-    console.log(error)
     handleResponseError(res, 400, error)
   }
 }

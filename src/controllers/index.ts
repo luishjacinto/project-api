@@ -1,7 +1,8 @@
 import { signIn } from './sign-in'
 import { signUp } from './sign-up'
+import { verifyUser } from './verify-user'
 
-export const rootControllers = { signIn, signUp }
+export const rootControllers = { signIn, signUp, verifyUser }
 export * as draftsControllers from './drafts'
 export * as productsControllers from './products'
 export * as userProductsControllers from './user-products'

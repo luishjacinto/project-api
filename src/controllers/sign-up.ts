@@ -3,6 +3,9 @@ import bcrypt from "bcrypt";
 
 import { User } from '../database/users'
 import { jwtSign, handleResponseError } from '../utilities'
+import { sendMail } from '../services/mail'
+
+import nodemailer from 'nodemailer'
 
 export type SignUpRequestBody = {
   name: string,
@@ -17,21 +20,22 @@ export async function signUp(
   try {
     const { name, email, password } = req.body
 
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(password, salt);
+    // const salt = bcrypt.genSaltSync(10);
+    // const hash = bcrypt.hashSync(password, salt);
 
-    const user = await User.findOneOrCreate({
-      name,
-      email,
-      password: hash
-    })
+    // const user = await User.findOneOrCreate({
+    //   name,
+    //   email,
+    //   password: hash
+    // })
 
-    const token = jwtSign({ id: user.id })
+    // const token = jwtSign({ id: user.id })
+    const token = 'teste'
 
-    res.json({
-      name: user.name,
-      email: user.email,
-      token
+    await sendMail(email, 'Verify your account', `http://localhost:3000/verify_user/${token}`)
+
+    res.send({
+      message: 'An mail was sent to your account email, please verify the account'
     })
 
   } catch (error) {

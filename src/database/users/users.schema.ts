@@ -18,6 +18,11 @@ const UserSchema = new Schema({
   },
   token: {
     type: String
+  },
+  verified: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 }, defaultSchemaOptions)
 
