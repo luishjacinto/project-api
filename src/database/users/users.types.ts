@@ -6,6 +6,7 @@ export interface IUser {
   password: string
   createdAt: Date
   updatedAt: Date
+  admin: boolean
 }
 
 export interface IUserDocument extends Document{
@@ -14,6 +15,7 @@ export interface IUserDocument extends Document{
   password: string
   createdAt: Date
   updatedAt: Date
+  admin: boolean
 }
 
 export interface IUserModel extends Model<IUserDocument> {
