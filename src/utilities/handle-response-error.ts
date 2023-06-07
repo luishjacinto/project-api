@@ -1,7 +1,7 @@
 import { Response } from 'express'
 import { HttpStatusCode } from 'axios'
 
-export function handleResponseError(response: Response, status: HttpStatusCode, error: unknown) {
+export function handleResponseError(response: Response, status: HttpStatusCode, error: unknown | undefined = undefined) {
   response.status(status)
 
   if (typeof error === 'string') {

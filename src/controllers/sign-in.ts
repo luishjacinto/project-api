@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 
 import { User } from '../database/users'
 import { jwtSign, handleResponseError } from '../utilities'
+import { ifApplicationIsUnderMaintenanceThrowError } from '../utilities/if-application-is-under-maintenance-throw-error'
 
 export type SignInRequestBody = {
   email: string,
@@ -19,7 +20,15 @@ export async function signIn(
 
     if (user) {
       if (bcrypt.compareSync(password, user.password)) {
-        await user.updateOne({ id: user.id });
+
+        if (!user.admin) {
+          try {
+            ifApplicationIsUnderMaintenanceThrowError(req)
+          } catch (error) {
+            return handleResponseError(res, 503, error)
+          }
+        }
+
         const token = await jwtSign({ id: user.id })
 
         return res.json({
@@ -34,7 +43,6 @@ export async function signIn(
 
     handleResponseError(res, 404, 'User not found')
   } catch (error) {
-    console.log(error)
     handleResponseError(res, 400, error)
   }
 }
