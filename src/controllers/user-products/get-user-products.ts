@@ -9,10 +9,12 @@ import {
 import { type ResponseLocalsWithUser } from '../../types/routes'
 
 type GetUserProductsQuery = {
-  gtin?: string
-  name?: string
+  search?: string
   sort?: keyof IUserProduct
   sortOrder?: SortOrder
+  groupBy?: 'barcode'
+  skip?: number
+  limit?: number
 }
 
 export async function getUserProducts(
@@ -23,10 +25,12 @@ export async function getUserProducts(
     const userId = res.locals.user.id
 
     let {
-      gtin,
-      name,
+      groupBy,
+      search,
       sort,
-      sortOrder
+      sortOrder,
+      skip,
+      limit
     } = req.query
 
     if (!sort || !sortOrder) {
@@ -34,16 +38,41 @@ export async function getUserProducts(
       sortOrder = 'asc'
     }
 
+    if (!skip) {
+      skip = 0
+    }
+
+    if (!limit) {
+      limit = 50
+    }
+
     const userProducts =
       await UserProduct
         .find({
           userId,
-          gtin: new RegExp(gtin || '', 'i'),
-          name: new RegExp(name || '', 'i'),
+          $or: [
+            { barcode: new RegExp(search || '', 'i') },
+            { name: new RegExp(search || '', 'i') }
+          ]
         })
         .sort({ [sort]: sortOrder })
+        .skip(skip)
+        .limit(limit)
 
-    res.send(userProducts).end()
+    if (!!groupBy) {
+      const groups = userProducts.map(product => product[groupBy as 'barcode'])
+      const uniqueGroups = [...new Set(groups)]
+      console.log(uniqueGroups)
+      res.send(uniqueGroups.map(group => {
+        return {
+          group,
+          products: userProducts.filter(product => product[groupBy as 'barcode'] === group)
+        }
+      })).end()
+    } else {
+      res.send(userProducts).end()
+    }
+
   } catch (error) {
     handleResponseError(res, 400, error)
   }

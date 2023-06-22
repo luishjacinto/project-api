@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
 
 import {
-  type RequestParamsWithGTIN,
+  type RequestParamsWithBarcode,
   type ResponseLocalsWithProduct
 } from '../../types/routes'
 
 export async function getProduct(
-  _: Request<RequestParamsWithGTIN>,
+  _: Request<RequestParamsWithBarcode>,
   res: Response<{}, ResponseLocalsWithProduct>
 ) {
   const { product } = res.locals

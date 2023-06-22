@@ -7,8 +7,8 @@ const router = express.Router()
 
 router.use('/products', rootMiddlewares.setUserOnResponseLocalsByJWT)
 
-router.use('/products/:gtin', productsMiddlewares.setProductOnResponseLocalsByGTIN)
+router.use('/products/:barcode', productsMiddlewares.setProductOnResponseLocalsByBarcode)
 
-router.get('/products/:gtin', productsControllers.getProduct)
+router.get('/products/:barcode', productsControllers.getProduct)
 
 export { router as productsRouter }

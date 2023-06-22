@@ -27,6 +27,6 @@ export async function setUserOnResponseLocalsByJWT(
       throw new Error("JWT not found in authorization header")
     }
   } catch (error) {
-      handleResponseError(res, 403, error)
+      handleResponseError(res, 401, error)
   }
 }

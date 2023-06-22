@@ -4,7 +4,7 @@ import { FindOneOrCreateParams } from './products.statics';
 
 export interface IProduct {
   name: string
-  gtin: string
+  barcode: string
   thumbnail?: string
   createdAt: Date
   updatedAt: Date
@@ -12,7 +12,7 @@ export interface IProduct {
 
 export interface IProductDocument extends Document{
   name: string
-  gtin: string
+  barcode: string
   thumbnail?: string
   createdAt: Date
   updatedAt: Date
@@ -22,8 +22,8 @@ export interface IProductModel extends Model<IProductDocument> {
   findOneOrCreate: (
     {
       name,
-      gtin,
+      barcode,
     }: FindOneOrCreateParams
   ) => Promise<IProductDocument>,
-  findByGTIN: ( gtin: string ) => Promise<IProductDocument | null>;
+  findByBarcode: ( barcode: string ) => Promise<IProductDocument | null>;
 }

@@ -4,7 +4,7 @@ import { Schema } from "mongoose"
 import { user } from './drafts.methods'
 import UserProductSchema from '../users-products/users-products.schema'
 
-const DraftDataSchema = UserProductSchema.pick(['name', 'gtin', 'quantity', 'quantityUsed', 'quantityDiscarded', 'expiresAt'], {
+const DraftDataSchema = UserProductSchema.pick(['name', 'barcode', 'quantity', 'quantityUsed', 'quantityDiscarded', 'expiresAt'], {
   ...defaultSchemaOptions,
   timestamps: false
 })

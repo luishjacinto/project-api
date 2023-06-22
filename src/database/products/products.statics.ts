@@ -3,24 +3,24 @@ import { IProductDocument } from "./products.types";
 
 export type FindOneOrCreateParams = {
   name: string,
-  gtin: string
+  barcode: string
 }
 
 export async function findOneOrCreate({
   name,
-  gtin
+  barcode
 } : FindOneOrCreateParams): Promise<IProductDocument> {
-  const record = await Product.findByGTIN(gtin);
+  const record = await Product.findByBarcode(barcode);
 
   if (record) {
     return record;
   } else {
-    return Product.create({ name, gtin });
+    return Product.create({ name, barcode });
   }
 }
 
-export async function findByGTIN(
-  gtin: string
+export async function findByBarcode(
+  barcode: string
 ) : Promise<IProductDocument | null> {
-  return await Product.findOne({ gtin })
+  return await Product.findOne({ barcode })
 }

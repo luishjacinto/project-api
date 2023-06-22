@@ -2,30 +2,30 @@ import { NextFunction, Request, Response } from 'express'
 
 import { Product } from '../../database/products'
 
-import { getProductFromCosmosApiByGTIN } from '../../services'
+import { getProductFromCosmosApiByBarcode } from '../../services'
 import { handleResponseError } from '../../utilities/handle-response-error'
 import {
-  type RequestParamsWithGTIN,
+  type RequestParamsWithBarcode,
   type ResponseLocalsWithProduct
 } from '../../types/routes'
 
-export async function setProductOnResponseLocalsByGTIN(
-  req: Request<RequestParamsWithGTIN>,
+export async function setProductOnResponseLocalsByBarcode(
+  req: Request<RequestParamsWithBarcode>,
   res: Response<{}, ResponseLocalsWithProduct>,
   next: NextFunction
 ) {
   try {
-    const { gtin } = req.params
+    const { barcode } = req.params
 
-    let product = await Product.findByGTIN(gtin)
+    let product = await Product.findByBarcode(barcode)
 
     if (!product) {
-      const productInfo = await getProductFromCosmosApiByGTIN(gtin)
+      const productInfo = await getProductFromCosmosApiByBarcode(barcode)
 
       if (productInfo) {
         product = await Product.create({
           name: productInfo.description,
-          gtin,
+          barcode,
           thumbnail: productInfo.thumbnail
         })
       }

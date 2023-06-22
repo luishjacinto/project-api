@@ -2,9 +2,9 @@ import axios, { AxiosResponse, HttpStatusCode } from 'axios'
 
 import { consoleLogOnRed } from '../utilities/console-log-on-red'
 
-type GetProductFromCosmosApiByGTINReturn = {
+type GetProductFromCosmosApiByBarcodeResponseData = {
   description: string
-  gtin: number
+  barcode: number
   thumbnail: string
   width: number | null
   height: number | null
@@ -24,17 +24,17 @@ type GetProductFromCosmosApiByGTINReturn = {
   }
 } | null
 
-export async function getProductFromCosmosApiByGTIN(gtin: string): Promise<GetProductFromCosmosApiByGTINReturn> {
+export async function getProductFromCosmosApiByBarcode(barcode: string): Promise<GetProductFromCosmosApiByBarcodeResponseData> {
   const COSMOS_TOKEN = process.env.COSMOS_TOKEN
 
   if (!COSMOS_TOKEN) {
       consoleLogOnRed("No COSMOS_TOKEN on environment variables")
-      throw new Error("Error on getting information about GTIN in external API")
+      throw new Error("Error on getting information about Barcode in external API")
   }
 
-  const response: AxiosResponse =
+  const response: AxiosResponse<GetProductFromCosmosApiByBarcodeResponseData> =
     await axios
-      .get(`https://api.cosmos.bluesoft.com.br/gtins/${gtin}`, {
+      .get(`https://api.cosmos.bluesoft.com.br/gtins/${barcode}`, {
         headers: {
           "X-Cosmos-Token": COSMOS_TOKEN,
         },

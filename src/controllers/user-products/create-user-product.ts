@@ -11,7 +11,7 @@ import { ResponseLocalsWithUser } from '../../types/routes'
 
 type CreateUserProductBody = {
   name: string
-  gtin: string
+  barcode: string
   quantity: number
   quantityUsed: number
   quantityDiscarded: number
@@ -26,7 +26,7 @@ export async function createUserProduct(
   try {
     const {
       name,
-      gtin,
+      barcode,
       quantity,
       quantityUsed,
       quantityDiscarded,
@@ -39,7 +39,7 @@ export async function createUserProduct(
     userProduct.userId = res.locals.user.id
 
     userProduct.name = name
-    userProduct.gtin = gtin
+    userProduct.barcode = barcode
     userProduct.quantity = quantity
     userProduct.quantityUsed = quantityUsed || 0
     userProduct.quantityDiscarded = quantityDiscarded || 0
@@ -56,7 +56,7 @@ export async function createUserProduct(
       userProduct.expiresAt = new Date(expiresAt)
     }
 
-    const product = await Product.findByGTIN(gtin)
+    const product = await Product.findByBarcode(barcode)
 
     if (product) {
       userProduct.productId = product.id

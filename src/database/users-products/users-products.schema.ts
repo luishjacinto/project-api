@@ -8,7 +8,7 @@ const UserProductSchema = new Schema({
     type: String,
     required: true
   },
-  gtin: {
+  barcode: {
     type: String,
     required: true
   },

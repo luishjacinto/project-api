@@ -4,7 +4,7 @@ import { IUser } from '../users/users.types'
 
 export interface IUserProduct {
   name: string
-  gtin: string
+  barcode: string
   productId?: ObjectId
   userId: ObjectId
   quantity: number
@@ -18,7 +18,7 @@ export interface IUserProduct {
 
 export interface IUserProductDocument extends Document{
   name: string
-  gtin: string
+  barcode: string
   productId?: ObjectId
   userId: ObjectId
   quantity: number

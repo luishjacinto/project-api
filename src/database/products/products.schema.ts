@@ -1,6 +1,6 @@
 import { Schema } from "mongoose"
 
-import { findByGTIN } from './products.statics'
+import { findByBarcode } from './products.statics'
 import { defaultSchemaOptions } from '../../config/default-schema-options'
 
 const ProductSchema = new Schema({
@@ -8,7 +8,7 @@ const ProductSchema = new Schema({
     type: String,
     required: true
   },
-  gtin: {
+  barcode: {
     type: String,
     required: true,
     unique: true
@@ -18,6 +18,6 @@ const ProductSchema = new Schema({
   },
 }, defaultSchemaOptions)
 
-ProductSchema.statics.findByGTIN = findByGTIN
+ProductSchema.statics.findByBarcode = findByBarcode
 
 export default ProductSchema
