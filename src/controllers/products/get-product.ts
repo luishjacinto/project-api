@@ -11,5 +11,5 @@ export async function getProduct(
 ) {
   const { product } = res.locals
 
-  res.json(product).end()
+  res.json(await product.load()).end()
 }

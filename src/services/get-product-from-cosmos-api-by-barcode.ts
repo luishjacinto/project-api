@@ -5,7 +5,7 @@ import { consoleLogOnRed } from '../utilities/console-log-on-red'
 type GetProductFromCosmosApiByBarcodeResponseData = {
   description: string
   barcode: number
-  thumbnail: string
+  thumbnail?: string
   width: number | null
   height: number | null
   length: number | null

@@ -21,11 +21,13 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "aws-sdk": "^2.1407.0",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "file-type": "^18.5.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.2.1",
     "morgan": "^1.10.0"

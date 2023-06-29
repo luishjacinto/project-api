@@ -1,6 +1,7 @@
-import { Document, Model } from "mongoose";
+import { Model } from "mongoose";
 
 import { FindOneOrCreateParams } from './products.statics';
+import { ModelWithLoad } from '../../types/model-with-load'
 
 export interface IProduct {
   name: string
@@ -10,7 +11,7 @@ export interface IProduct {
   updatedAt: Date
 }
 
-export interface IProductDocument extends Document{
+export interface IProductDocument extends ModelWithLoad<IProduct>{
   name: string
   barcode: string
   thumbnail?: string
