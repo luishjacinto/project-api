@@ -1,11 +1,14 @@
-import { readFile } from '../../services/read-file'
-import { IProduct } from './products.types'
+import { getAttachment } from '../../utilities/get-attachment'
+import { ObjectWithAttachments } from '../../types/object-with-attachments'
+import { createObjectWithAttachmentsFromDocument } from '../../utilities/create-object-with-attachments-from-document'
+import { IProduct, IProductDocument } from './products.types'
 
+export async function loadAttachments(this: IProductDocument): Promise<ObjectWithAttachments<IProduct>> {
+  const productWithAttachments = createObjectWithAttachmentsFromDocument(this)
 
-export async function load(this: IProduct): Promise<IProduct> {
-  if (this.thumbnail) {
-    this.thumbnail = await readFile(this.thumbnail)
+  if (productWithAttachments.thumbnail) {
+    productWithAttachments.attachments.push(await getAttachment(productWithAttachments.thumbnail))
   }
 
-  return this
+  return productWithAttachments
 }

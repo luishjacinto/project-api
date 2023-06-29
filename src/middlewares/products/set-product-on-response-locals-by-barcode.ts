@@ -8,8 +8,8 @@ import {
   type RequestParamsWithBarcode,
   type ResponseLocalsWithProduct
 } from '../../types/routes'
-import { urlToBuffer } from '../../services/url-to-buffer'
-import { getMimeTypeAndExtFromBuffer } from '../../services/get-mime-type-and-ext-from-buffer'
+import { urlToBuffer } from '../../utilities/url-to-buffer'
+import { getMimeTypeAndExtFromBuffer } from '../../utilities/get-mime-type-and-ext-from-buffer'
 import { uploadFile } from '../../services/upload-file'
 
 export async function setProductOnResponseLocalsByBarcode(
