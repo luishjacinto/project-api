@@ -1,6 +1,8 @@
-import { Document, Model, ObjectId } from "mongoose"
+import { DocumentWithLoadAttachments } from './../../types/document-with-load-attachments';
+import { Model, ObjectId } from "mongoose"
 import { IProduct } from '../products'
 import { IUser } from '../users/users.types'
+import { ObjectWithAttachments } from '../../types/object-with-attachments'
 
 export interface IUserProduct {
   name: string
@@ -14,9 +16,10 @@ export interface IUserProduct {
   expiresAt?: Date
   createdAt: Date
   updatedAt: Date
+  images?: string[]
 }
 
-export interface IUserProductDocument extends Document{
+export interface IUserProductDocument extends DocumentWithLoadAttachments<IUserProduct> {
   name: string
   barcode: string
   productId?: ObjectId
@@ -28,6 +31,7 @@ export interface IUserProductDocument extends Document{
   expiresAt?: Date
   createdAt: Date
   updatedAt: Date
+  images?: string[]
   user: () => Promise<IUser | null>
   product: () => Promise<IProduct | null>
   howManyLeft: () => number
@@ -35,6 +39,7 @@ export interface IUserProductDocument extends Document{
   disuse: (quantity?: number) => Promise<void>
   discard: (quantity?: number) => Promise<void>
   reiterate: (quantity?: number) => Promise<void>
+  loadFirstImage: () => Promise<ObjectWithAttachments<IUserProduct>>
 }
 
 export interface IUserProductModel extends Model<IUserProductDocument> {}

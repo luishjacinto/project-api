@@ -13,7 +13,7 @@ export async function getUserProduct(
   try {
     const { userProduct } = res.locals
 
-    res.json(userProduct).end()
+    res.json(await userProduct.loadAttachments()).end()
   } catch (error) {
     handleResponseError(res, 400, error)
   }

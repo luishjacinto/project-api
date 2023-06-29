@@ -8,6 +8,8 @@ import { Product } from '../../database/products'
 
 import { UserProduct } from '../../database/users-products'
 import { ResponseLocalsWithUser } from '../../types/routes'
+import { uploadFile } from '../../services/upload-file'
+import { getMimeTypeAndExtFromBuffer } from '../../utilities/get-mime-type-and-ext-from-buffer'
 
 type CreateUserProductBody = {
   name: string
@@ -16,7 +18,8 @@ type CreateUserProductBody = {
   quantityUsed: number
   quantityDiscarded: number
   observation?: string
-  expiresAt?: string
+  expiresAt?: string,
+  images?: string[]
 }
 
 export async function createUserProduct(
@@ -31,12 +34,15 @@ export async function createUserProduct(
       quantityUsed,
       quantityDiscarded,
       observation,
-      expiresAt
+      expiresAt,
+      images
     } = req.body
 
     const userProduct = new UserProduct()
 
-    userProduct.userId = res.locals.user.id
+    const { user } = res.locals
+
+    userProduct.userId = user.id
 
     userProduct.name = name
     userProduct.barcode = barcode
@@ -58,8 +64,28 @@ export async function createUserProduct(
 
     const product = await Product.findByBarcode(barcode)
 
+    userProduct.images = []
+
+    if (images) {
+      const imagesUrl = await Promise.all(
+        images.map(async image => {
+          const buffer = Buffer.from(image, 'base64')
+
+          const { mime, ext } = await getMimeTypeAndExtFromBuffer(buffer)
+
+          return await uploadFile(`user_products/${user.id}/${barcode}/${new Date().getTime()}.${ext}`, buffer, mime)
+        })
+      )
+
+      userProduct.images = imagesUrl
+    }
+
     if (product) {
       userProduct.productId = product.id
+
+      if (product.thumbnail && !userProduct.images.length) {
+        userProduct.images = [product.thumbnail]
+      }
     }
 
     await userProduct.save()

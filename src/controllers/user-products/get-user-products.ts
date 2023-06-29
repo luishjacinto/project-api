@@ -47,26 +47,29 @@ export async function getUserProducts(
     }
 
     const userProducts =
-      await UserProduct
-        .find({
-          userId,
-          $or: [
-            { barcode: new RegExp(search || '', 'i') },
-            { name: new RegExp(search || '', 'i') }
-          ]
-        })
-        .sort({ [sort]: sortOrder })
-        .skip(skip)
-        .limit(limit)
+      await Promise.all(
+        (await UserProduct
+          .find({
+            userId,
+            $or: [
+              { barcode: new RegExp(search || '', 'i') },
+              { name: new RegExp(search || '', 'i') }
+            ]
+          })
+          .sort({ [sort]: sortOrder })
+          .skip(skip)
+          .limit(limit)
+        ).map(async userProduct => await userProduct.loadFirstImage())
+      )
 
     if (!!groupBy) {
-      const groups = userProducts.map(product => product[groupBy as 'barcode'])
+      const groups = userProducts.map(userProduct => userProduct[groupBy as 'barcode'])
       const uniqueGroups = [...new Set(groups)]
-      console.log(uniqueGroups)
+
       res.send(uniqueGroups.map(group => {
         return {
           group,
-          products: userProducts.filter(product => product[groupBy as 'barcode'] === group)
+          products: userProducts.filter(userProduct => userProduct[groupBy as 'barcode'] === group)
         }
       })).end()
     } else {

@@ -1,6 +1,10 @@
-import { IUserProductDocument } from './users-products.types'
+import { IUserProduct, IUserProductDocument } from './users-products.types'
 import { IProductDocument, Product } from '../products'
 import { IUserDocument, User } from '../users'
+import { ObjectWithAttachments } from '../../types/object-with-attachments'
+import { createObjectWithAttachmentsFromDocument } from '../../utilities/create-object-with-attachments-from-document'
+import { getAttachment } from '../../utilities/get-attachment'
+import { ifInstanceOfErrorThrowAgain } from '../../utilities/if-instance-of-error-throw-again'
 
 export async function user(this: IUserProductDocument): Promise<IUserDocument | null> {
   return await User.findById(this.userId)
@@ -60,4 +64,42 @@ export async function reiterate(this: IUserProductDocument, quantity: number = 1
 
   this.quantityDiscarded -= quantity
   await this.save()
+}
+
+export async function loadAttachments(this: IUserProductDocument): Promise<ObjectWithAttachments<IUserProduct>> {
+  const userProductWithAttachments = createObjectWithAttachmentsFromDocument(this)
+
+  if (userProductWithAttachments.images) {
+    for (const index in userProductWithAttachments.images) {
+      try{
+        const attachment = await getAttachment(userProductWithAttachments.images[index])
+
+        if (attachment) {
+          userProductWithAttachments.attachments.push(attachment)
+        }
+      } catch (error) {
+        ifInstanceOfErrorThrowAgain(error, `Error on loading attachments from user product(${this.id})`)
+      }
+    }
+  }
+
+  return userProductWithAttachments
+}
+
+export async function loadFirstImage(this: IUserProductDocument): Promise<ObjectWithAttachments<IUserProduct>> {
+  const userProductWithAttachments = createObjectWithAttachmentsFromDocument(this)
+
+  if (userProductWithAttachments.images) {
+    try {
+      const attachment = await getAttachment(userProductWithAttachments.images[0])
+
+      if (attachment) {
+        userProductWithAttachments.attachments.push(attachment)
+      }
+    } catch (error) {
+      ifInstanceOfErrorThrowAgain(error, `Error on loading first attachment from user product(${this.id})`)
+    }
+  }
+
+  return userProductWithAttachments
 }
