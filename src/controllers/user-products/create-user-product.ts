@@ -8,8 +8,6 @@ import { Product } from '../../database/products'
 
 import { UserProduct } from '../../database/users-products'
 import { ResponseLocalsWithUser } from '../../types/routes'
-import { uploadFile } from '../../services/upload-file'
-import { getMimeTypeAndExtFromBuffer } from '../../utilities/get-mime-type-and-ext-from-buffer'
 
 type CreateUserProductBody = {
   name: string
@@ -18,7 +16,7 @@ type CreateUserProductBody = {
   quantityUsed: number
   quantityDiscarded: number
   observation?: string
-  expiresAt?: string,
+  expiresAt?: number
   images?: string[]
 }
 
@@ -55,44 +53,25 @@ export async function createUserProduct(
     }
 
     if (expiresAt) {
-      if(Number.isNaN(Date.parse(expiresAt))) {
-        throw new Error("Invalid format of expiresAt")
-      }
-
       userProduct.expiresAt = new Date(expiresAt)
     }
 
     const product = await Product.findByBarcode(barcode)
 
-    userProduct.images = []
-
-    if (images) {
-      const imagesUrl = await Promise.all(
-        images.map(async image => {
-          const buffer = Buffer.from(image, 'base64')
-
-          const { mime, ext } = await getMimeTypeAndExtFromBuffer(buffer)
-
-          return await uploadFile(`user_products/${user.id}/${barcode}/${new Date().getTime()}.${ext}`, buffer, mime)
-        })
-      )
-
-      userProduct.images = imagesUrl
-    }
-
     if (product) {
       userProduct.productId = product.id
-
-      if (product.thumbnail && !userProduct.images.length) {
-        userProduct.images = [product.thumbnail]
-      }
     }
 
     await userProduct.save()
 
     const id = userProduct.id
 
+    const imageBuffers = images ? images.map(image => Buffer.from(image, 'base64')) : []
+
+    await userProduct.createAttachments(imageBuffers)
+
     res.status(201).json({ id }).end()
+
   } catch (error) {
     handleResponseError(res, 400, error)
   }

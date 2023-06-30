@@ -13,6 +13,10 @@ export async function deleteUserProduct(
   try {
     await res.locals.userProduct.deleteOne()
 
+    try {
+      await res.locals.userProduct.deleteAttachments()
+    } catch (_) {}
+
     res.end()
   } catch (error) {
     handleResponseError(res, 400, error)

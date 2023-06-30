@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-import { consoleLogOnRed } from './console-log-on-red'
+import { consoleLogOnRed } from './console-log-on-color'
 
 function getJWTSecret() {
   const JWT_SECRET = process.env.JWT_SECRET

@@ -1,7 +1,7 @@
-import { DocumentWithLoadAttachments } from './../../types/document-with-load-attachments';
+import { DocumentWithAttachments } from '../../types/document-with-attachments';
 import { Model, ObjectId } from "mongoose"
-import { IProduct } from '../products'
-import { IUser } from '../users/users.types'
+import { IProductDocument } from '../products'
+import { IUserDocument } from '../users/users.types'
 import { ObjectWithAttachments } from '../../types/object-with-attachments'
 
 export interface IUserProduct {
@@ -19,7 +19,7 @@ export interface IUserProduct {
   images?: string[]
 }
 
-export interface IUserProductDocument extends DocumentWithLoadAttachments<IUserProduct> {
+export interface IUserProductDocument extends DocumentWithAttachments<IUserProduct> {
   name: string
   barcode: string
   productId?: ObjectId
@@ -32,14 +32,20 @@ export interface IUserProductDocument extends DocumentWithLoadAttachments<IUserP
   createdAt: Date
   updatedAt: Date
   images?: string[]
-  user: () => Promise<IUser | null>
-  product: () => Promise<IProduct | null>
+  user: () => Promise<IUserDocument>
+  product: () => Promise<IProductDocument | null>
   howManyLeft: () => number
   use: (quantity?: number) => Promise<void>
   disuse: (quantity?: number) => Promise<void>
   discard: (quantity?: number) => Promise<void>
   reiterate: (quantity?: number) => Promise<void>
+
+  /**
+   * Create attachments for user product. If buffers array is empty and the product base exists and has a thumbnail, the thumbnail will be used.
+  */
+  createAttachments: (buffers: Buffer[]) => Promise<void>
   loadFirstImage: () => Promise<ObjectWithAttachments<IUserProduct>>
+  deleteImage: (image: string) => Promise<void>
 }
 
 export interface IUserProductModel extends Model<IUserProductDocument> {}

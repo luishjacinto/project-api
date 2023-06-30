@@ -1,11 +1,10 @@
-import { Base64String } from 'aws-sdk/clients/wellarchitected';
 import { BucketName } from 'aws-sdk/clients/appflow';
 import AWS from 'aws-sdk'
 import { ifInstanceOfErrorThrowLogThenAgain } from '../../utilities/if-instance-of-error-throw-log-then-throw-again'
-import { consoleLogOnBlue } from '../../utilities/console-log-on-color'
 import { removeAWSDomainFromUrl } from './removeAWSDomainFromUrl'
+import { consoleLogOnBlue } from '../../utilities/console-log-on-color'
 
-export async function readFileAWS(KeyOrUrl: string): Promise<Base64String | undefined> {
+export async function deleteFileAWS(KeyOrUrl: string): Promise<void> {
   try {
     const {
       AWS_REGION,
@@ -24,20 +23,13 @@ export async function readFileAWS(KeyOrUrl: string): Promise<Base64String | unde
 
     const s3 = new AWS.S3({ apiVersion: '2006-03-01', region: process.env.AWS_REGION });
 
-    const result = await s3.getObject({
+    await s3.deleteObject({
         Bucket: process.env.AWS_S3_BUCKET as BucketName,
         Key: decodeURIComponent(KeyOrUrl),
-
     }).promise();
 
-    if (result.Body) {
+    consoleLogOnBlue(`Object deleted on AWS S3: ${KeyOrUrl}`)
 
-      consoleLogOnBlue(`Object readed on AWS S3: ${KeyOrUrl}`)
-
-      return result.Body?.toString('base64')
-    }
-
-    throw new Error('Could not get object data from S3')
   } catch (error) {
     ifInstanceOfErrorThrowLogThenAgain(error, `AWS S3 Error][${KeyOrUrl}`)
   }

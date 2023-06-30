@@ -1,7 +1,20 @@
 import { Schema } from "mongoose"
 
 import { defaultSchemaOptions } from '../../config/default-schema-options'
-import { user, product, howManyLeft, discard, disuse, reiterate, use, loadAttachments, loadFirstImage } from './users-products.methods'
+import {
+  user,
+  product,
+  howManyLeft,
+  discard,
+  disuse,
+  reiterate,
+  use,
+  loadAttachments,
+  loadFirstImage,
+  deleteAttachments,
+  deleteImage,
+  createAttachments,
+} from './users-products.methods'
 
 const UserProductSchema = new Schema({
   name: {
@@ -76,7 +89,10 @@ UserProductSchema.methods.disuse = disuse
 UserProductSchema.methods.discard = discard
 UserProductSchema.methods.reiterate = reiterate
 
+UserProductSchema.methods.createAttachments = createAttachments
 UserProductSchema.methods.loadAttachments = loadAttachments
+UserProductSchema.methods.deleteAttachments = deleteAttachments
 UserProductSchema.methods.loadFirstImage = loadFirstImage
+UserProductSchema.methods.deleteImage = deleteImage
 
 export default UserProductSchema

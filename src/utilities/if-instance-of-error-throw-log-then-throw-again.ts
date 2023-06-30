@@ -1,4 +1,4 @@
-import { consoleLogOnRed } from './console-log-on-red'
+import { consoleLogOnRed } from './console-log-on-color'
 
 export function ifInstanceOfErrorThrowLogThenAgain(error: unknown, prefixLogMessage: string) {
   if (error instanceof Error) {

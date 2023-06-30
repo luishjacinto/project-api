@@ -9,8 +9,6 @@ import {
   type ResponseLocalsWithProduct
 } from '../../types/routes'
 import { urlToBuffer } from '../../utilities/url-to-buffer'
-import { getMimeTypeAndExtFromBuffer } from '../../utilities/get-mime-type-and-ext-from-buffer'
-import { uploadFile } from '../../services/upload-file'
 
 export async function setProductOnResponseLocalsByBarcode(
   req: Request<RequestParamsWithBarcode>,
@@ -26,19 +24,16 @@ export async function setProductOnResponseLocalsByBarcode(
       const productInfo = await getProductFromCosmosApiByBarcode(barcode)
 
       if (productInfo) {
-        let thumbnail;
+        product = await Product.create({
+          name: productInfo.description,
+          barcode
+        })
 
         if (productInfo.thumbnail) {
           const buffer = await urlToBuffer(productInfo.thumbnail)
-          const { mime, ext } = await getMimeTypeAndExtFromBuffer(buffer)
-          thumbnail = await uploadFile(`${barcode}.${ext}`, buffer, mime)
-        }
 
-        product = await Product.create({
-          name: productInfo.description,
-          barcode,
-          thumbnail
-        })
+          product.createAttachments([buffer])
+        }
       }
     }
 

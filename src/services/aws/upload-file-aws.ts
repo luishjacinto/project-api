@@ -1,4 +1,6 @@
 import AWS from 'aws-sdk'
+import { consoleLogOnBlue } from '../../utilities/console-log-on-color'
+import { removeAWSDomainFromUrl } from './removeAWSDomainFromUrl'
 
 export async function uploadFileAWS(Key: string, Body: any, ContentType: string) {
 
@@ -23,6 +25,8 @@ export async function uploadFileAWS(Key: string, Body: any, ContentType: string)
       Body,
       ContentType,
   }).promise();
+
+  consoleLogOnBlue(`Object created on AWS S3: ${removeAWSDomainFromUrl(data.Location)}`)
 
   return data.Location;
 }

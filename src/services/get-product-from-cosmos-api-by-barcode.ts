@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, HttpStatusCode } from 'axios'
 
-import { consoleLogOnRed } from '../utilities/console-log-on-red'
+import { consoleLogOnRed } from '../utilities/console-log-on-color'
 
 type GetProductFromCosmosApiByBarcodeResponseData = {
   description: string
