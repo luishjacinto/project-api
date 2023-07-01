@@ -8,9 +8,9 @@ import {
 import { Product, UserProduct } from '../../../database'
 import { ResponseLocalsWithUser } from '../../../types/routes'
 import { CreateUserProductBody, createUserProductSchema } from './create-user-product.schema'
-import { makeRouteWithRequestBodyValidation } from '../../../utilities/make-route-with-request-body-validation'
+import { makeRequestBodyValidationMiddlewareAndHandler } from '../../../utilities/make-request-body-validation-middleware-and-handler'
 
-export const createUserProduct = makeRouteWithRequestBodyValidation(
+export const createUserProduct = makeRequestBodyValidationMiddlewareAndHandler(
   createUserProductSchema,
   async function (
     req: Request<RequestParamsWithId, any, CreateUserProductBody>,
