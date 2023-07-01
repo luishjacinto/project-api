@@ -131,6 +131,10 @@ export async function loadAttachments(this: IUserProductDocument): Promise<Objec
   if (userProductWithAttachments.images) {
     try{
       for (const index in userProductWithAttachments.images) {
+          if (!userProductWithAttachments.images[index]) {
+            continue
+          }
+
           const attachment = await getAttachment(userProductWithAttachments.images[index])
 
           if (attachment) {
@@ -150,6 +154,9 @@ export async function deleteAttachments(this: IUserProductDocument): Promise<voi
     try{
        for (const index in this.images) {
         const currentImage: string = this.images[index]
+        if (!this.images[index]) {
+          continue
+        }
 
         await deleteFile(currentImage)
 
@@ -172,7 +179,7 @@ export async function deleteAttachments(this: IUserProductDocument): Promise<voi
 export async function loadFirstImage(this: IUserProductDocument): Promise<ObjectWithAttachments<IUserProduct>> {
   const userProductWithAttachments = createObjectWithAttachmentsFromDocument(this)
 
-  if (userProductWithAttachments.images) {
+  if (userProductWithAttachments.images && userProductWithAttachments.images[0]) {
     try {
       const attachment = await getAttachment(userProductWithAttachments.images[0])
 
@@ -190,7 +197,7 @@ export async function loadFirstImage(this: IUserProductDocument): Promise<Object
 export async function deleteImage(this: IUserProductDocument, image: string): Promise<void> {
   if (this.images) {
     try {
-      if (this.images.includes(image)) {
+      if (this.images.includes(image) && image) {
         await deleteFile(image)
 
         this.images = this.images.filter(v => v !== image)
