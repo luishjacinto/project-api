@@ -107,17 +107,15 @@ export async function createAttachments(this: IUserProductDocument, buffers: Buf
   try {
     await this.save()
   } catch (error) {
-    await this.deleteOne()
-
-    for (const index in this.images) {
-      const currentImage = this.images[index]
+    for (const index in imagesUrl) {
+      const currentImage = imagesUrl[index]
 
       if (product && currentImage == product?.thumbnail) {
         continue
       }
 
       try {
-        await this.deleteAttachments()
+        await this.deleteImage(currentImage)
       } catch (_) {}
     }
 
