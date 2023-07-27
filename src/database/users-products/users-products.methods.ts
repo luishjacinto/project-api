@@ -83,6 +83,12 @@ export async function reiterate(this: IUserProductDocument, quantity: number = 1
 export async function createAttachments(this: IUserProductDocument, buffers: Buffer[]): Promise<void> {
   const user = await this.user()
 
+  const imagesLength = buffers.length + (this.images?.length || 0)
+
+  if (imagesLength > 3) {
+    throw new Error('Limit of 3 images per user product')
+  }
+
   const imagesUrl = await Promise.all(
     buffers.map(async buffer => {
       const { mime, ext } = await getMimeTypeAndExtFromBuffer(buffer)

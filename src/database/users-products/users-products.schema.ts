@@ -40,7 +40,7 @@ const UserProductSchema = new Schema({
       message: 'The sum of used and discarded cannot be greater than quantity',
       validator: function (quantity: number) {
         const context = (this as any)
-        return quantity >= (context.quantityUsed + context.quantityDiscarded);
+        return quantity >= (context.quantityUsed + context.quantityDiscarded)
       },
     },
   },
@@ -52,7 +52,7 @@ const UserProductSchema = new Schema({
       message: 'Quantity of used cannot be greater than quantity',
       validator: function (quantityUsed: number) {
         const context = (this as any)
-        return quantityUsed <= context.quantity;
+        return quantityUsed <= context.quantity
       },
     },
   },
@@ -64,7 +64,7 @@ const UserProductSchema = new Schema({
       message: 'Quantity of discarded cannot be greater than quantity',
       validator: function (quantityDiscarded: number) {
         const context = (this as any)
-        return quantityDiscarded <= context.quantity;
+        return quantityDiscarded <= context.quantity
       },
     },
   },
@@ -75,7 +75,13 @@ const UserProductSchema = new Schema({
     type: Date
   },
   images: {
-    type: [String]
+    type: [String],
+    validate: {
+      message: 'Limit of 3 images per user product',
+      validator: function (images: string[]) {
+        return images.length <= 3
+      },
+    },
   }
 }, defaultSchemaOptions)
 
