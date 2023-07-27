@@ -7,7 +7,6 @@ export type UpdateUserProductBody = {
   quantityDiscarded: number
   observation?: string
   expiresAt?: number
-  images?: string[]
 }
 
 export const updateUserProductSchema: JSONSchemaType<UpdateUserProductBody> = {
@@ -32,15 +31,6 @@ export const updateUserProductSchema: JSONSchemaType<UpdateUserProductBody> = {
     expiresAt: {
       type: 'integer',
       nullable: true
-    },
-    images: {
-      type: 'array',
-      // uniqueItems: true,
-      // maxItems: 3,
-      nullable: true,
-      items: {
-        type: "string"
-      }
     }
   },
   required: [

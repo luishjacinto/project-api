@@ -75,57 +75,33 @@ export async function reiterate(this: IUserProductDocument, quantity: number = 1
   await this.save()
 }
 
-/**
- * Create attachments for user product.
- * If buffers array is empty and the product base exists and has a thumbnail, the thumbnail will be added.
- * This method only includes attachments without removing any existing one
-*/
-export async function createAttachments(this: IUserProductDocument, buffers: Buffer[]): Promise<void> {
+export async function createAttachment(this: IUserProductDocument, buffer: Buffer): Promise<string | undefined> {
   const user = await this.user()
 
-  const imagesLength = buffers.length + (this.images?.length || 0)
+  const imagesLength = (this.images?.length || 0) + 1
 
   if (imagesLength > 3) {
     throw new Error('Limit of 3 images per user product')
   }
 
-  const imagesUrl = await Promise.all(
-    buffers.map(async buffer => {
-      const { mime, ext } = await getMimeTypeAndExtFromBuffer(buffer)
+  const { mime, ext } = await getMimeTypeAndExtFromBuffer(buffer)
 
-      return await uploadFile(`users_products/${user.id}/${this.id}/${new Date().getTime()}.${ext}`, buffer, mime)
-    })
-  )
+  const imageUrl = await uploadFile(`users_products/${user.id}/${this.id}/${new Date().getTime()}.${ext}`, buffer, mime)
 
   if (this.images) {
-    this.images = [...this.images, ...imagesUrl]
+    this.images = [...this.images, imageUrl]
   } else {
-    this.images = imagesUrl
-  }
-
-
-  const product = await this.product()
-
-  if (!this.images.length && product && product.thumbnail) {
-    this.images = [product.thumbnail]
+    this.images = [imageUrl]
   }
 
   try {
     await this.save()
+
+    return imageUrl
   } catch (error) {
-    for (const index in imagesUrl) {
-      const currentImage = imagesUrl[index]
+    await this.deleteAttachment(imageUrl);
 
-      if (product && currentImage == product?.thumbnail) {
-        continue
-      }
-
-      try {
-        await this.deleteImage(currentImage)
-      } catch (_) {}
-    }
-
-    ifInstanceOfErrorThrowAgain(error, 'Could not create user product attachments')
+    ifInstanceOfErrorThrowAgain(error, 'Could not create user product image')
   }
 }
 
@@ -146,7 +122,7 @@ export async function loadAttachments(this: IUserProductDocument): Promise<Objec
           }
         }
       } catch (error) {
-        ifInstanceOfErrorThrowAgain(error, `Error on loading attachments from user product(${this.id})`)
+        ifInstanceOfErrorThrowAgain(error, `Error on loading images from user product(${this.id})`)
       }
     }
 
@@ -155,6 +131,9 @@ export async function loadAttachments(this: IUserProductDocument): Promise<Objec
 
 export async function deleteAttachments(this: IUserProductDocument): Promise<void> {
   if (this.images) {
+
+    const product = await this.product()
+
     try{
        for (const index in this.images) {
         const currentImage: string = this.images[index]
@@ -162,9 +141,13 @@ export async function deleteAttachments(this: IUserProductDocument): Promise<voi
           continue
         }
 
-        await deleteFile(currentImage)
+        const hasToDeleteFile = !product || (product && currentImage !== product?.thumbnail)
 
-        if (!this.$isDeleted) {
+        if (hasToDeleteFile) {
+          await deleteFile(currentImage)
+        }
+
+        if (!this.$isDeleted()) {
           this.images = this.images.filter(v => v !== currentImage)
 
           if (!this.images.length) {
@@ -175,7 +158,7 @@ export async function deleteAttachments(this: IUserProductDocument): Promise<voi
         }
       }
     } catch (error) {
-      ifInstanceOfErrorThrowAgain(error, `Error on deleting attachments from user product(${this.id})`)
+      ifInstanceOfErrorThrowAgain(error, `Error on deleting images from user product(${this.id})`)
     }
   }
 }
@@ -191,22 +174,34 @@ export async function loadFirstImage(this: IUserProductDocument): Promise<Object
         userProductWithAttachments.attachments.push(attachment)
       }
     } catch (error) {
-      ifInstanceOfErrorThrowAgain(error, `Error on loading first attachment from user product(${this.id})`)
+      ifInstanceOfErrorThrowAgain(error, `Error on loading first image from user product(${this.id})`)
     }
   }
 
   return userProductWithAttachments
 }
 
-export async function deleteImage(this: IUserProductDocument, image: string): Promise<void> {
+export async function deleteAttachment(this: IUserProductDocument, url: string): Promise<void> {
   if (this.images) {
+
+    const product = await this.product()
+
     try {
-      if (this.images.includes(image) && image) {
-        await deleteFile(image)
+      if (this.images.includes(url) && url) {
 
-        this.images = this.images.filter(v => v !== image)
+        const hasToDeleteFile = !product || (product && url !== product?.thumbnail)
 
-        if (!this.$isDeleted) {
+        if (hasToDeleteFile) {
+          await deleteFile(url)
+        }
+
+        if (!this.$isDeleted()) {
+          this.images = this.images.filter(v => v !== url)
+
+          if (!this.images.length) {
+            delete this.images
+          }
+
           await this.save()
         }
       } else {

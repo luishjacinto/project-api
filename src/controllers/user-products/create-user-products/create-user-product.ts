@@ -9,7 +9,6 @@ import { Product, UserProduct } from '../../../database'
 import { ResponseLocalsWithUser } from '../../../types/routes'
 import { CreateUserProductBody, createUserProductSchema } from './create-user-product.schema'
 import { makeRequestBodyValidationMiddlewareAndHandler } from '../../../utilities/make-request-body-validation-middleware-and-handler'
-import { ifInstanceOfErrorThrowAgain } from '../../../utilities/if-instance-of-error-throw-again'
 
 export const createUserProduct = makeRequestBodyValidationMiddlewareAndHandler(
   createUserProductSchema,
@@ -26,7 +25,7 @@ export const createUserProduct = makeRequestBodyValidationMiddlewareAndHandler(
         quantityDiscarded,
         observation,
         expiresAt,
-        images
+        setProductThumbnailIfExists
       } = req.body
 
       const userProduct = new UserProduct()
@@ -53,20 +52,15 @@ export const createUserProduct = makeRequestBodyValidationMiddlewareAndHandler(
 
       if (product) {
         userProduct.productId = product.id
+
+        if (product.thumbnail && setProductThumbnailIfExists) {
+          userProduct.images = [product.thumbnail]
+        }
       }
 
       await userProduct.save()
 
       const id = userProduct.id
-
-      const imageBuffers = images ? images.map(image => Buffer.from(image, 'base64')) : []
-
-      try {
-        await userProduct.createAttachments(imageBuffers)
-      } catch (error){
-        await userProduct.deleteOne()
-        ifInstanceOfErrorThrowAgain(error)
-      }
 
       res.status(201).json({ id }).end()
     } catch (error) {

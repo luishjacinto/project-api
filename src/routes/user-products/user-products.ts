@@ -2,6 +2,7 @@ import express from 'express'
 
 import { rootMiddlewares, userProductsMiddlewares } from '../../middlewares'
 import { userProductsControllers } from '../../controllers'
+import { userProductsImagesRouter } from './images'
 import { userProductsUseRouter } from './use'
 import { userProductsDiscardRouter } from './discard'
 
@@ -18,6 +19,7 @@ router.get('/user_products/:id', userProductsControllers.getUserProduct)
 router.put('/user_products/:id', userProductsControllers.updateUserProduct)
 router.delete('/user_products/:id', userProductsControllers.deleteUserProduct)
 
+router.use(userProductsImagesRouter)
 router.use(userProductsUseRouter)
 router.use(userProductsDiscardRouter)
 

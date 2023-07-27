@@ -1,57 +1,61 @@
 import { getAttachment } from '../../utilities/get-attachment'
-import { ObjectWithAttachments } from '../../types/object-with-attachments'
-import { createObjectWithAttachmentsFromDocument } from '../../utilities/create-object-with-attachments-from-document'
+import { ObjectWithAttachment } from '../../types/object-with-attachment'
 import { IProduct, IProductDocument } from './products.types'
 import { ifInstanceOfErrorThrowAgain } from '../../utilities/if-instance-of-error-throw-again'
 import { deleteFile } from '../../services/delete-file'
 import { uploadFile } from '../../services/upload-file'
 import { getMimeTypeAndExtFromBuffer } from '../../utilities/get-mime-type-and-ext-from-buffer'
+import { createObjectWithAttachmentFromDocument } from '../../utilities/create-object-with-attachment-from-document'
 
-export async function createAttachments(this: IProductDocument, buffers: Buffer[]): Promise<void> {
-  if (buffers.length) {
-    const [buffer] = buffers
+export async function createAttachment(this: IProductDocument, buffer: Buffer): Promise<string | undefined> {
 
-    const { mime, ext } = await getMimeTypeAndExtFromBuffer(buffer)
-    this.thumbnail = await uploadFile(`products/${this.barcode}.${ext}`, buffer, mime)
+  const { mime, ext } = await getMimeTypeAndExtFromBuffer(buffer)
 
+  this.thumbnail = await uploadFile(`products/${this.barcode}.${ext}`, buffer, mime)
+
+  try {
+    await this.save()
+
+    return this.thumbnail
+  } catch (error) {
     try {
-      await this.save()
-    } catch (error) {
-      await this.deleteOne()
+      await this.deleteAttachment()
+    } catch (_) {}
 
-      try {
-        await this.deleteAttachments()
-      } catch (_) {}
-
-      ifInstanceOfErrorThrowAgain(error, 'Could not create product attachment')
-    }
+    ifInstanceOfErrorThrowAgain(error, 'Could not create product thumbnail')
   }
 }
 
-export async function loadAttachments(this: IProductDocument): Promise<ObjectWithAttachments<IProduct>> {
-  const productWithAttachments = createObjectWithAttachmentsFromDocument(this)
+export async function loadAttachment(this: IProductDocument): Promise<ObjectWithAttachment<IProduct>> {
+  const productWithAttachment = createObjectWithAttachmentFromDocument(this)
 
-  if (productWithAttachments.thumbnail) {
+  if (productWithAttachment.thumbnail) {
     try {
-      const attachment = await getAttachment(productWithAttachments.thumbnail)
+      const attachment = await getAttachment(productWithAttachment.thumbnail)
 
       if (attachment) {
-        productWithAttachments.attachments.push(attachment)
+        productWithAttachment.attachment = attachment
       }
     } catch (error) {
-      ifInstanceOfErrorThrowAgain(error, `Error on loading attachment from product(${this.id})`)
+      ifInstanceOfErrorThrowAgain(error, `Error on loading thumbnail from product(${this.id})`)
     }
   }
 
-  return productWithAttachments
+  return productWithAttachment
 }
 
-export async function deleteAttachments(this: IProductDocument): Promise<void> {
+export async function deleteAttachment(this: IProductDocument): Promise<void> {
   if (this.thumbnail) {
     try {
       await deleteFile(this.thumbnail)
+
+      if (!this.$isDeleted()) {
+        delete this.thumbnail
+
+        await this.save()
+      }
     } catch (error) {
-      ifInstanceOfErrorThrowAgain(error, `Error on deleting attachment from product(${this.id})`)
+      ifInstanceOfErrorThrowAgain(error, `Error on deleting thumbnail from product(${this.id})`)
     }
   }
 }

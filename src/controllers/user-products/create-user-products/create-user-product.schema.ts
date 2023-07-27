@@ -8,7 +8,7 @@ export type CreateUserProductBody = {
   quantityDiscarded: number
   observation?: string
   expiresAt?: number
-  images?: string[]
+  setProductThumbnailIfExists?: boolean
 }
 
 export const createUserProductSchema: JSONSchemaType<CreateUserProductBody> = {
@@ -37,14 +37,9 @@ export const createUserProductSchema: JSONSchemaType<CreateUserProductBody> = {
       type: 'integer',
       nullable: true
     },
-    images: {
-      type: 'array',
-      uniqueItems: true,
-      maxItems: 3,
-      nullable: true,
-      items: {
-        type: "string"
-      }
+    setProductThumbnailIfExists: {
+      type: 'boolean',
+      nullable: true
     }
   },
   required: [

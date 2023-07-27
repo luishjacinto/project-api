@@ -21,8 +21,7 @@ export const updateUserProduct = makeRequestBodyValidationMiddlewareAndHandler(
         quantityUsed,
         quantityDiscarded,
         observation,
-        expiresAt,
-        images
+        expiresAt
       } = req.body
 
       const { userProduct } = res.locals
@@ -41,10 +40,6 @@ export const updateUserProduct = makeRequestBodyValidationMiddlewareAndHandler(
       }
 
       await userProduct.save()
-
-      const imageBuffers = images ? images.map(image => Buffer.from(image, 'base64')) : []
-
-      await userProduct.createAttachments(imageBuffers)
 
       res.status(204).end()
     } catch (error) {

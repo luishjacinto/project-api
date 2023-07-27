@@ -32,7 +32,9 @@ export async function setProductOnResponseLocalsByBarcode(
         if (productInfo.thumbnail) {
           const buffer = await urlToBuffer(productInfo.thumbnail)
 
-          product.createAttachments([buffer])
+          try {
+            await product.createAttachment(buffer)
+          } catch (_) {}
         }
       }
     }

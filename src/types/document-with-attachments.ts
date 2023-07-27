@@ -3,7 +3,11 @@ import { ObjectWithAttachments } from './object-with-attachments'
 
 export type DocumentWithAttachments<T> = {
 
-  createAttachments: (buffers: Buffer[]) => Promise<void>
+  /**
+   * Create external entity
+  */
+
+  createAttachment: (buffer: Buffer) => Promise<string | undefined>
 
   /**
    * Load external entities
@@ -11,8 +15,14 @@ export type DocumentWithAttachments<T> = {
   loadAttachments: () => Promise<ObjectWithAttachments<T>>
 
   /**
-   * Delete external entities
+     * Delete external entity
+  */
+  deleteAttachment: (url: string) => Promise<void>
+
+  /**
+     * Delete external entities
   */
   deleteAttachments: () => Promise<void>
+
 
 } & Document

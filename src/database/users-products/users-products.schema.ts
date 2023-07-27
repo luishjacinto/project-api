@@ -11,9 +11,9 @@ import {
   use,
   loadAttachments,
   loadFirstImage,
-  deleteAttachments,
-  deleteImage,
-  createAttachments,
+  createAttachment,
+  deleteAttachment,
+  deleteAttachments
 } from './users-products.methods'
 
 const UserProductSchema = new Schema({
@@ -95,10 +95,10 @@ UserProductSchema.methods.disuse = disuse
 UserProductSchema.methods.discard = discard
 UserProductSchema.methods.reiterate = reiterate
 
-UserProductSchema.methods.createAttachments = createAttachments
+UserProductSchema.methods.createAttachment = createAttachment
 UserProductSchema.methods.loadAttachments = loadAttachments
+UserProductSchema.methods.deleteAttachment = deleteAttachment
 UserProductSchema.methods.deleteAttachments = deleteAttachments
 UserProductSchema.methods.loadFirstImage = loadFirstImage
-UserProductSchema.methods.deleteImage = deleteImage
 
 export default UserProductSchema

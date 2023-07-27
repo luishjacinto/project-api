@@ -1,9 +1,9 @@
 import { Schema } from "mongoose"
 import { findByBarcode } from './products.statics'
 import {
-  createAttachments,
-  deleteAttachments,
-  loadAttachments
+  createAttachment,
+  deleteAttachment,
+  loadAttachment
 } from './products.methods'
 import { defaultSchemaOptions } from '../../config/default-schema-options'
 
@@ -24,8 +24,8 @@ const ProductSchema = new Schema({
 
 ProductSchema.statics.findByBarcode = findByBarcode
 
-ProductSchema.methods.createAttachments = createAttachments
-ProductSchema.methods.loadAttachments = loadAttachments
-ProductSchema.methods.deleteAttachments = deleteAttachments
+ProductSchema.methods.createAttachment = createAttachment
+ProductSchema.methods.loadAttachment = loadAttachment
+ProductSchema.methods.deleteAttachment = deleteAttachment
 
 export default ProductSchema
