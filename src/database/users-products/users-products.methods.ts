@@ -81,7 +81,7 @@ export async function createAttachment(this: IUserProductDocument, buffer: Buffe
   const imagesLength = (this.images?.length || 0) + 1
 
   if (imagesLength > 3) {
-    throw new Error('Limit of 3 images per user product')
+    throw new Error('An user product cannot exceed the limit of 3 images.')
   }
 
   const { mime, ext } = await getMimeTypeAndExtFromBuffer(buffer)

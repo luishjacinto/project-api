@@ -77,7 +77,7 @@ const UserProductSchema = new Schema({
   images: {
     type: [String],
     validate: {
-      message: 'Limit of 3 images per user product',
+      message: 'Cannot exceed the limit of 3 images',
       validator: function (images: string[]) {
         return images.length <= 3
       },
