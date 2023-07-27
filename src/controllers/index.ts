@@ -1,4 +1,4 @@
-import { signIn } from './sign-in'
+import { signIn } from './sign-in/sign-in'
 import { signUp } from './sign-up'
 
 export const rootControllers = { signIn, signUp }
