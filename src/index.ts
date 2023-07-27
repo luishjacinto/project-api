@@ -9,7 +9,6 @@ import {
     productsRouter,
     userProductsRouter,
     userRouter,
-    draftsRouter,
     applicationRouter
 } from './routes'
 import { defaultApplicationConfig } from './config/default-application-config'
@@ -36,7 +35,6 @@ app.use(applicationRouter)
 app.use(rootMiddlewares.verifyIfApplicationIsNotUnderMaintenance)
 app.use(userProductsRouter)
 app.use(productsRouter)
-app.use(draftsRouter)
 
 database.connect()
 

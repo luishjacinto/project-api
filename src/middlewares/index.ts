@@ -4,4 +4,3 @@ import { verifyIfApplicationIsNotUnderMaintenance } from './verify-if-applicatio
 export const rootMiddlewares = { setUserOnResponseLocalsByJWT, verifyIfApplicationIsNotUnderMaintenance }
 export * as productsMiddlewares from './products'
 export * as userProductsMiddlewares from './user-products'
-export * as draftsMiddlewares from './drafts'
