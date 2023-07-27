@@ -1,4 +1,4 @@
-import { IRouter, NextFunction, Request, RequestHandler, Response } from 'express'
+import { NextFunction, Request, RequestHandler, Response } from 'express'
 
 import { handleResponseError } from '.'
 import { JSONSchemaType } from '../types/json-types'
