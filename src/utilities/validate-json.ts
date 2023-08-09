@@ -1,7 +1,7 @@
 import { Schema, Validator } from 'jsonschema'
 import { JSONSchemaType } from '../types/json-types'
 
-export function validateJson<T>(schema: JSONSchemaType<T>, json: Object){
+export function validateJson<T>(schema: JSONSchemaType<T>, json: Object): true|void{
 
   const validator = new Validator()
 
@@ -9,7 +9,7 @@ export function validateJson<T>(schema: JSONSchemaType<T>, json: Object){
   const result = validator.validate(json, (schema as Schema))
 
   if (result.valid) {
-    return
+    return true
   }
 
   throw new Error(`${result.errors.map(error => error.stack.split("\"").join("'")).join('; ')};`)
