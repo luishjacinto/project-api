@@ -11,7 +11,7 @@ router.use('/user_products', rootMiddlewares.setUserOnResponseLocalsByJWT)
 
 router.get('/user_products', userProductsControllers.getUserProducts)
 
-router.post('/user_products', ...userProductsControllers.createUserProduct)
+router.post('/user_products', userProductsControllers.createUserProduct)
 
 router.use('/user_products/:id', userProductsMiddlewares.setUserProductOnResponseLocalsById)
 
