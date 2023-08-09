@@ -33,7 +33,7 @@ export const signIn = makeRequestBodyValidationMiddlewareAndHandler(
           res.json({
             name: user.name,
             email: user.email,
-            // token
+            token
           }).end()
 
         } else {

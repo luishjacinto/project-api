@@ -31,7 +31,7 @@ export const signInResponseSchema: JSONSchemaType<SignInResponseBody> = {
     email: {
       type: 'string'
     },
-    password: {
+    name: {
       type: 'string'
     },
     token: {
@@ -40,7 +40,7 @@ export const signInResponseSchema: JSONSchemaType<SignInResponseBody> = {
   },
   required: [
     'email',
-    'password',
+    'name',
     'token'
   ]
 }
