@@ -21,7 +21,9 @@ export const signInRequestSchema: JSONSchemaType<SignInRequestBody> = {
   ]
 }
 
-export type SignInResponseBody = SignInRequestBody & {
+export type SignInResponseBody = {
+  email: string,
+  name: string
   token: string
 }
 
