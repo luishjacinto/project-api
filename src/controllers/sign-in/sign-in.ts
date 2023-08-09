@@ -4,13 +4,13 @@ import bcrypt from "bcrypt";
 import { User } from '../../database/users'
 import { jwtSign, handleResponseError } from '../../utilities'
 import { ifApplicationIsUnderMaintenanceThrowError } from '../../utilities/if-application-is-under-maintenance-throw-error'
-import { SignInBody, signInSchema } from './sign-in.schema'
+import { SignInRequestBody, signInRequestSchema } from './sign-in.schema'
 import { makeRequestBodyValidationMiddlewareAndHandler } from '../../utilities/make-request-body-validation-middleware-and-handler'
 
 export const signIn = makeRequestBodyValidationMiddlewareAndHandler(
-  signInSchema,
+  signInRequestSchema,
   async function (
-    req: Request<{}, any, SignInBody>,
+    req: Request<{}, any, SignInRequestBody>,
     res: Response
   ) {
     try {
@@ -33,7 +33,7 @@ export const signIn = makeRequestBodyValidationMiddlewareAndHandler(
           res.json({
             name: user.name,
             email: user.email,
-            token
+            // token
           }).end()
 
         } else {

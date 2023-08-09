@@ -1,11 +1,11 @@
 import { JSONSchemaType } from '../../types/json-types'
 
-export type SignInBody = {
+export type SignInRequestBody = {
   email: string,
   password: string
 }
 
-export const signInSchema: JSONSchemaType<SignInBody> = {
+export const signInRequestSchema: JSONSchemaType<SignInRequestBody> = {
   type: 'object',
   properties: {
     email: {
@@ -18,5 +18,29 @@ export const signInSchema: JSONSchemaType<SignInBody> = {
   required: [
     'email',
     'password'
+  ]
+}
+
+export type SignInResponseBody = SignInRequestBody & {
+  token: string
+}
+
+export const signInResponseSchema: JSONSchemaType<SignInResponseBody> = {
+  type: 'object',
+  properties: {
+    email: {
+      type: 'string'
+    },
+    password: {
+      type: 'string'
+    },
+    token: {
+      type: 'string'
+    }
+  },
+  required: [
+    'email',
+    'password',
+    'token'
   ]
 }
