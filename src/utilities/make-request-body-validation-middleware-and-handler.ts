@@ -24,7 +24,7 @@ export function makeRequestBodyValidationMiddlewareAndHandler<T, K extends Reque
       return next()
     } catch (error) {
       const messageReplacingInstanceWithBody = (error as Error).message.split('instance').join('body')
-      handleResponseError(res, 401, new InvalidRequestBodyError(messageReplacingInstanceWithBody))
+      handleResponseError(res, 422, new InvalidRequestBodyError(messageReplacingInstanceWithBody))
     }
   }
 
